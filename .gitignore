@@ -22,3 +22,10 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+*rice-box.go
+*rice-box.syso
+squirrel
+
+vendor/
+.idea/

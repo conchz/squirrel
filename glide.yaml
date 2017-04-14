@@ -1,0 +1,5 @@
+package: github.com/lavenderx/squirrel
+import:
+- package: github.com/labstack/echo
+  version: 3.0.3
+- package: github.com/GeertJohan/go.rice
