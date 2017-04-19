@@ -1,11 +1,10 @@
 package main
 
 import (
-	"net/http"
-
 	rice "github.com/GeertJohan/go.rice"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"net/http"
 )
 
 func main() {
