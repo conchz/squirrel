@@ -10,3 +10,5 @@ import:
 - package: github.com/smallnest/rpcx
   version: ^1.3.0
 - package: github.com/valyala/fasthttp
+- package: gopkg.in/redis.v6
+  version: ^6.2.3

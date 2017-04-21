@@ -1,5 +1,5 @@
-hash: bbe843d52246e13a14766276b73701fe99db61c073acd4004c300f2f7759f99e
-updated: 2017-04-19T21:06:48.3055405+08:00
+hash: de1758872c5f1de55987c01dce44cadd6a9c5c442f4c3f834143f2913725df25
+updated: 2017-04-21T15:29:20.486472365+08:00
 imports:
 - name: github.com/daaku/go.zipexe
   version: a5fe2436ffcb3236e175e5149162b41cd28bd27d
@@ -56,4 +56,6 @@ imports:
   version: 9a7256cb28ed514b4e1e5f68959914c4c28a92e0
   subpackages:
   - unix
+- name: gopkg.in/redis.v6
+  version: 15786cf82174d65ac7f478c7faa6d2e055dad8b7
 testImports: []
