@@ -3,5 +3,3 @@
 *.html linguist-language=Go
 *.vue linguist-language=Go
 *.tpl linguist-language=Go
-*.vhost linguist-language=Go
-*.sh linguist-language=Go

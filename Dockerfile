@@ -38,7 +38,7 @@ RUN dpkg-reconfigure -f noninteractive tzdata
 ADD ./squirrel $GOPATH/bin
 
 # Add Nginx frontend host
-ADD ./docker/nginx-echo.conf /etc/nginx/conf.d/default.conf
+ADD ./docker/nginx-echo.vhost /etc/nginx/conf.d/default.conf
 
 # Setup Nginx
 RUN sed -i -e"s/keepalive_timeout\s*65/keepalive_timeout 3/" /etc/nginx/nginx.conf
