@@ -1,5 +1,5 @@
-hash: de1758872c5f1de55987c01dce44cadd6a9c5c442f4c3f834143f2913725df25
-updated: 2017-04-21T15:29:20.486472365+08:00
+hash: 9788839bee14bfe1149665ab9a151b8d653d0a969e38f6dad7c3bd0f3000b696
+updated: 2017-04-25T10:19:51.927750881+08:00
 imports:
 - name: github.com/daaku/go.zipexe
   version: a5fe2436ffcb3236e175e5149162b41cd28bd27d
@@ -9,8 +9,8 @@ imports:
   version: fbe422beac33c4443570d39dccb4b0c4c914d6ca
   subpackages:
   - embedded
-- name: github.com/jinzhu/gorm
-  version: 717654b31c3d51348cb305684369c20a8387154b
+- name: github.com/go-xorm/xorm
+  version: 3c8314e91603f0bfa6a228c1a0fea8a9e298f6d9
 - name: github.com/json-iterator/go
   version: abcf2759ed264810fa140330c0d957f4661f5425
 - name: github.com/kardianos/osext
@@ -30,8 +30,6 @@ imports:
   version: ded68f7a9561c023e790de24279db7ebf473ea80
 - name: github.com/mattn/go-isatty
   version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
-- name: github.com/smallnest/rpcx
-  version: 7aaa5bb7f166f1e70b6929bc6d1bfbb9e5e52b39
 - name: github.com/tylerb/graceful
   version: d72b0151351a13d0421b763b88f791469c4f5dc7
 - name: github.com/valyala/bytebufferpool
@@ -40,8 +38,6 @@ imports:
   version: fc109d6887b5edb43510d924d14d735f3975fb51
 - name: github.com/valyala/fasttemplate
   version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
-- name: go.uber.org/zap
-  version: 1550bc05539134bbf8612a35f34a79ab8bf34ee3
 - name: golang.org/x/crypto
   version: 3cb07270c9455e8ad27956a70891c962d121a228
   subpackages:
@@ -57,5 +53,5 @@ imports:
   subpackages:
   - unix
 - name: gopkg.in/redis.v6
-  version: 15786cf82174d65ac7f478c7faa6d2e055dad8b7
+  version: 5d95eaece6a4a3b68e07419504b6f415f74e90bb
 testImports: []
