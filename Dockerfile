@@ -35,7 +35,7 @@ RUN echo "Asia/Shanghai" > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 # Stage App
-ADD ./squirrel $GOPATH/bin
+ADD ./dist/squirrel-server $GOPATH/bin
 
 # Add Nginx frontend host
 ADD ./docker/nginx-echo.vhost /etc/nginx/conf.d/default.conf

@@ -1,7 +1,6 @@
 package main
 
 import (
-	rice "github.com/GeertJohan/go.rice"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/lavenderx/squirrel/boxes"
@@ -9,20 +8,13 @@ import (
 )
 
 var (
-	images         = boxes.Images()
-	cssFiles       = boxes.CSS()
-	jsFiles        = boxes.JS()
-	templates      = boxes.Templates()
-	favicon        = boxes.Favicon()
-	faviconHandler http.Handler
-	assetsHandler  http.Handler
+	assets        = boxes.Assets()
+	assetsHandler http.Handler
 )
 
 func init() {
-	faviconHandler = http.FileServer(favicon.HTTPBox())
-
 	// the file server for rice. "static" is the folder where the files come from.
-	assetsHandler = http.FileServer(rice.MustFindBox("static").HTTPBox())
+	assetsHandler = http.FileServer(assets.HTTPBox())
 }
 
 func main() {
@@ -33,7 +25,7 @@ func main() {
 
 	// serves the index.html and favicon.ico from rice
 	e.GET("/", echo.WrapHandler(assetsHandler))
-	e.GET("/favicon.ico", echo.WrapHandler(faviconHandler))
+	e.GET("/favicon.ico", echo.WrapHandler(assetsHandler))
 
 	// serves other static files
 	e.GET("/assets/*", echo.WrapHandler(http.StripPrefix("/assets/", assetsHandler)))
