@@ -3,6 +3,8 @@ import:
 - package: github.com/labstack/echo
   version: v3.0.3
 - package: github.com/GeertJohan/go.rice
+- package: github.com/go-sql-driver/mysql
+  version: v1.3
 - package: github.com/go-xorm/xorm
   version: ^0.6.2
 - package: github.com/json-iterator/go

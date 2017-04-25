@@ -7,6 +7,8 @@ import (
 	"net/http"
 )
 
+// https://jonathanmh.com/building-a-golang-api-with-echo-and-mysql/
+
 var (
 	assets        = boxes.Assets()
 	assetsHandler http.Handler
@@ -23,9 +25,22 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	// serves the index.html and favicon.ico from rice
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowHeaders: []string{
+			echo.HeaderOrigin,
+			echo.HeaderContentType,
+			echo.HeaderWWWAuthenticate,
+			echo.HeaderAuthorization},
+		AllowMethods: []string{
+			echo.GET,
+			echo.PUT,
+			echo.POST,
+			echo.DELETE},
+	}))
+
+	// serves the index.html from rice
 	e.GET("/", echo.WrapHandler(assetsHandler))
-	e.GET("/favicon.ico", echo.WrapHandler(assetsHandler))
 
 	// serves other static files
 	e.GET("/assets/*", echo.WrapHandler(http.StripPrefix("/assets/", assetsHandler)))
