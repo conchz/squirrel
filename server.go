@@ -5,17 +5,21 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/lavenderx/squirrel/boxes"
 	"net/http"
+	"os"
 )
 
 // https://jonathanmh.com/building-a-golang-api-with-echo-and-mysql/
 
 var (
-	assets        = boxes.Assets()
+	env           boxes.Environment
 	assetsHandler http.Handler
 )
 
 func init() {
-	// the file server for rice. "static" is the folder where the files come from.
+	args := os.Args[1:]
+	env = boxes.Environment(args[0])
+
+	assets := boxes.Assets()
 	assetsHandler = http.FileServer(assets.HTTPBox())
 }
 
@@ -39,12 +43,14 @@ func main() {
 			echo.DELETE},
 	}))
 
-	// serves the index.html from rice
-	e.GET("/", echo.WrapHandler(assetsHandler))
-
-	// serves other static files
-	e.GET("/assets/*", echo.WrapHandler(http.StripPrefix("/assets/", assetsHandler)))
+	// serves the index.html and other static files from rice
+	e.GET("/", staticFilesHandler())
+	e.GET("/static/*", staticFilesHandler())
 
 	// Start server
 	e.Logger.Fatal(e.Start(":7000"))
+}
+
+func staticFilesHandler() echo.HandlerFunc {
+	return echo.WrapHandler(assetsHandler)
 }
