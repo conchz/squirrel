@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Installing server dependencies
-#glide install
+glide install
 
 # Installing ui dependencies
 cd ./ui && npm install --registry=https://registry.npm.taobao.org
