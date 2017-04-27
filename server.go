@@ -5,20 +5,13 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/lavenderx/squirrel/boxes"
 	"net/http"
-	"os"
 )
 
 // https://jonathanmh.com/building-a-golang-api-with-echo-and-mysql/
 
-var (
-	env           boxes.Environment
-	assetsHandler http.Handler
-)
+var assetsHandler http.Handler
 
 func init() {
-	args := os.Args[1:]
-	env = boxes.Environment(args[0])
-
 	assets := boxes.Assets()
 	assetsHandler = http.FileServer(assets.HTTPBox())
 }

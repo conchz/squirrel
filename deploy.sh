@@ -1,7 +1,13 @@
 #!/bin/bash
 
-# Installing project dependencies
-glide install
+# Installing server dependencies
+#glide install
+
+# Installing ui dependencies
+cd ./ui && npm install --registry=https://registry.npm.taobao.org
+
+# Building ui resources
+npm run gulp build-prod && cd ..
 
 # Embedding static files
 go generate ./boxes

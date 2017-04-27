@@ -21,13 +21,6 @@ import rice "github.com/GeertJohan/go.rice"
 
 // go.rice idiosyncrasy #2 - Calls to FindBox must be done with string literals.
 
-type Environment string
-
-const (
-	Dev  Environment = "dev"
-	Prod Environment = "prod"
-)
-
 var assets *rice.Box
 
 func Assets() *rice.Box {
