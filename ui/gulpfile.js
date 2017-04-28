@@ -28,4 +28,6 @@ gulp.task('dev-server', () => {
       throw new gutil.PluginError('dev-server', err)
     }
   });
+
+  gutil.log('Listening at', gutil.colors.magenta('http://localhost:8080'));
 });
