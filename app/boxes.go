@@ -2,7 +2,7 @@
 	Package boxes is a wrapper around a set of go.rice boxes created by a go.rice Config
 	defined to first look for files in the package directory, and then in the binary.
 */
-package boxes
+package app
 
 import rice "github.com/GeertJohan/go.rice"
 
@@ -31,4 +31,13 @@ func Assets() *rice.Box {
 	assets = rice.MustFindBox("../ui/dist")
 
 	return assets
+}
+
+func ConfigFile() []byte {
+	bytes, err := rice.MustFindBox("../conf").Bytes("app.yaml")
+	if err != nil {
+		panic(err)
+	}
+
+	return bytes
 }

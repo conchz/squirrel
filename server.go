@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"github.com/lavenderx/squirrel/boxes"
+	"github.com/lavenderx/squirrel/app"
 	"net/http"
 )
 
@@ -12,7 +12,7 @@ import (
 var assetsHandler http.Handler
 
 func init() {
-	assets := boxes.Assets()
+	assets := app.Assets()
 	assetsHandler = http.FileServer(assets.HTTPBox())
 }
 

@@ -10,7 +10,7 @@ cd ./ui && npm install --registry=https://registry.npm.taobao.org
 npm run gulp build-prod && cd ..
 
 # Embedding static files
-go generate ./boxes
+go generate ./app
 
 # Building an executable binary file
 go build -o ./dist/squirrel-server
