@@ -2,7 +2,7 @@ package app
 
 import (
 	"fmt"
-	"gopkg.in/redis.v6"
+	"gopkg.in/redis.v5"
 )
 
 var client *redis.Client
