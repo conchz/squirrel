@@ -11,3 +11,4 @@ import:
 - package: github.com/valyala/fasthttp
 - package: gopkg.in/redis.v6
   version: ^6.2.5
+- package: gopkg.in/yaml.v2
