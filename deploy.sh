@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Installing server dependencies
+# Installing Golang dependencies
 glide install
 
 # Installing ui dependencies
