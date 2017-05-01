@@ -1,5 +1,5 @@
-hash: 96b72671a6f27b35792d1fcc2bba22f8a9ca830e899d4ea9dffe6ad2a649faa6
-updated: 2017-04-28T20:36:50.1591723+08:00
+hash: 7015e98cbf104b09a6a3faaa971cd807c4de6da7f03c4e9bc476e02221abcb85
+updated: 2017-05-01T12:51:30.4483524+08:00
 imports:
 - name: github.com/daaku/go.zipexe
   version: a5fe2436ffcb3236e175e5149162b41cd28bd27d
@@ -22,7 +22,7 @@ imports:
 - name: github.com/kardianos/osext
   version: 9d302b58e975387d0b4d9be876622c86cefe64be
 - name: github.com/labstack/echo
-  version: 8d504c1b699c757b267255c53b3e5219f9974abc
+  version: 1049c9613cd371b7ea8f219404c9a821734781ed
   subpackages:
   - middleware
 - name: github.com/labstack/gommon
@@ -36,8 +36,6 @@ imports:
   version: ded68f7a9561c023e790de24279db7ebf473ea80
 - name: github.com/mattn/go-isatty
   version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
-- name: github.com/tylerb/graceful
-  version: d72b0151351a13d0421b763b88f791469c4f5dc7
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasthttp

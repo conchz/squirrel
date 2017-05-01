@@ -1,7 +1,7 @@
 package: github.com/lavenderx/squirrel
 import:
 - package: github.com/labstack/echo
-  version: v3.0.3
+  version: v3.1.0
 - package: github.com/GeertJohan/go.rice
 - package: github.com/go-sql-driver/mysql
   version: v1.3
