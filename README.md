@@ -1,6 +1,6 @@
 # squirrel
 
-A modern *Golang* web application scaffold, *Echo* for building RESTful API and *Vue.js* for the view.
+A modern [*Golang*](https://golang.org/) web application scaffold, [*Echo*](https://echo.labstack.com/) for building RESTful API and [*Vue.js*](https://vuejs.org/) for the view.
 
 ----------
 
