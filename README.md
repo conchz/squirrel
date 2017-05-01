@@ -7,10 +7,10 @@ A modern *Golang* web application scaffold, *Echo* for building RESTful API and 
 ## How to start application
 
 ### Starting Server
-    ![Starting Server](http://o81mq23fu.bkt.clouddn.com/idea_squirrel_server_startup.png)
+![Starting Server](http://o81mq23fu.bkt.clouddn.com/idea_squirrel_server_startup.png)
 
 ### Starting UI
-    ![Starting UI](http://o81mq23fu.bkt.clouddn.com/idea_squirrel_ui_startup.png)
+![Starting UI](http://o81mq23fu.bkt.clouddn.com/idea_squirrel_ui_startup.png)
 
 ## Deploying to Docker
 
