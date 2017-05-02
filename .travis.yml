@@ -15,7 +15,6 @@ services:
 
 before_install:
   - redis-server /etc/redis/redis.conf --daemonize yes --port 16379 --requirepass '5RdXzAq1'
-  - redis-cli -p 16379 -a 5RdXzAq1 info
 
 install:
   - go get -v github.com/Masterminds/glide
