@@ -7,12 +7,12 @@ import (
 
 var client *redis.Client
 
-func ConnectToRedis() *redis.Client {
+func ConnectToRedis(config *Config) *redis.Client {
 	if client != nil {
 		return client
 	}
 
-	redisConfig := GetConfig().RedisConf
+	redisConfig := config.RedisConf
 	client = redis.NewClient(&redis.Options{
 		Addr:     redisConfig.Address,
 		Password: redisConfig.Password,

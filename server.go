@@ -2,9 +2,11 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/labstack/gommon/log"
 	"github.com/lavenderx/squirrel/app"
 	"net/http"
 	"time"
@@ -21,18 +23,30 @@ type JWTClaims struct {
 	jwt.StandardClaims
 }
 
-var assetsHandler http.Handler
+var (
+	assetsHandler http.Handler
+	config        *app.Config
+)
 
 func init() {
 	assets := app.Assets()
 	assetsHandler = http.FileServer(assets.HTTPBox())
+
+	config = app.LoadConfig()
 }
 
 func main() {
 	e := echo.New()
 
-	e.Use(middleware.Logger())
+	lvl, err := app.ParseLevel(config.LoggingConf.Level)
+	if err != nil {
+		panic(err)
+	}
+	log.SetLevel(lvl)
+	e.Logger.SetLevel(lvl)
+
 	e.Use(middleware.Recover())
+	e.Use(middleware.RequestID())
 	e.Use(middleware.Secure())
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -51,14 +65,11 @@ func main() {
 
 	// Api group
 	apiGroup := e.Group("/api/v1")
-
-	// Configure middleware with the custom claims type
-	jwtConfig := middleware.JWTConfig{
+	// Configure middleware with the custom claims type for api group
+	apiGroup.Use(middleware.JWTWithConfig(middleware.JWTConfig{
 		Claims:     &JWTClaims{},
 		SigningKey: []byte("secret"),
-	}
-
-	apiGroup.Use(middleware.JWTWithConfig(jwtConfig))
+	}))
 	apiGroup.GET("", api)
 
 	// serves the index.html and other static files from rice
@@ -69,7 +80,8 @@ func main() {
 	e.POST("/login", login)
 
 	// Start server
-	e.Logger.Fatal(e.Start(":7000"))
+	address := fmt.Sprintf(":%v", fmt.Sprint(config.ServerConf.Port))
+	e.Logger.Fatal(e.Start(address))
 }
 
 func staticFilesHandler() echo.HandlerFunc {

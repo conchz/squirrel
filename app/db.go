@@ -20,12 +20,12 @@ func (u *User) TableName() string {
 
 var engine *xorm.Engine
 
-func ConnectToMySQL() *xorm.Engine {
+func ConnectToMySQL(config *Config) *xorm.Engine {
 	if engine != nil {
 		return engine
 	}
 
-	mysqlConfig := GetConfig().MySQLConf
+	mysqlConfig := config.MySQLConf
 
 	var engineErr error
 	engine, engineErr = xorm.NewEngine(mysqlConfig.Driver, mysqlConfig.DataSource)

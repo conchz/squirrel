@@ -21,7 +21,6 @@ const router = new VueRouter({
 FastClick.attach(document.body)
 
 Vue.config.productionTip = false
-Vue.http.options.root = 'http://localhost:7000/api/v1'
 
 // https://github.com/websanova/vue-auth
 

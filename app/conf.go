@@ -3,6 +3,13 @@ package app
 import "gopkg.in/yaml.v2"
 
 type Config struct {
+	ServerConf struct {
+		Port uint16 `yaml:"port"`
+	} `yaml:"server"`
+	LoggingConf struct {
+		Level    string `yaml:"level"`
+		FilePath string `yaml:"filePath"`
+	} `yaml:"logging"`
 	MySQLConf struct {
 		Driver     string `yaml:"driver"`
 		DataSource string `yaml:"dataSource"`
@@ -16,7 +23,7 @@ type Config struct {
 // http://stackoverflow.com/questions/20240179/nil-detection-in-go
 var config *Config
 
-func GetConfig() *Config {
+func LoadConfig() *Config {
 	if config != nil {
 		return config
 	}
