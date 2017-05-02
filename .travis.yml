@@ -1,0 +1,30 @@
+language: go
+
+go:
+  - 1.7.x
+  - 1.8.x
+  - tip
+
+os:
+  - linux
+
+sudo: false
+
+branches:
+  only:
+    - master
+
+services:
+  - redis-server
+
+before_install:
+  - redis-server /etc/redis/redis.conf --daemonize yes --port 16379 --requirepass '5RdXzAq1'
+  - redis-cli -p 16379 -a 5RdXzAq1 info
+
+install:
+  - go get -v github.com/Masterminds/glide
+  - cd $GOPATH/src/github.com/Masterminds/glide && git checkout 84607742b10f492430762d038e954236bbaf23f7 && go install && cd -
+  - glide install
+
+script:
+ - go test -v ./app/...
