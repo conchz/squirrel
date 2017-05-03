@@ -1,0 +1,8 @@
+FROM scratch
+MAINTAINER Zongzhi Bai <dolphineor@gmail.com>
+
+ADD ./dist/squirrel-server /
+
+EXPOSE 7000
+
+CMD ["/squirrel-server"]

@@ -13,10 +13,16 @@ npm run gulp build-prod && cd ..
 go generate ./app
 
 # Building an executable binary file
-go build -o ./dist/squirrel-server
+# https://blog.codeship.com/building-minimal-docker-containers-for-go-applications/
+CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./dist/squirrel-server
 
-# Building a docker image
-docker build -t lavenderx/squirrel .
-
-# Running a temporary docker container to start application
-docker run -it --rm -p 8081:80 lavenderx/squirrel
+if [ $1 == "mini" ]; then
+    # Building a minimal image, about 10MB.
+    docker build -f Dockerfile.scratch -t lavenderx/squirrel-scratch .
+    # Running a temporary container to start application
+    docker run -it --rm -p 8081:7000 lavenderx/squirrel-scratch
+else
+    # Building a normal image
+    docker build -t lavenderx/squirrel .
+    docker run -it --rm -p 8081:80 lavenderx/squirrel
+fi
