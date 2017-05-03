@@ -9,6 +9,7 @@ if (!process.env.NODE_ENV) {
 
 let opn = require('opn')
 let path = require('path')
+let gutil = require('gulp-util')
 let express = require('express')
 let webpack = require('webpack')
 let proxyMiddleware = require('http-proxy-middleware')
@@ -71,9 +72,9 @@ let readyPromise = new Promise(resolve => {
   _resolve = resolve
 })
 
-console.log('> Starting dev server...')
+gutil.log('> Starting dev server...')
 devMiddleware.waitUntilValid(() => {
-  console.log('> Listening at ' + uri + '\n')
+  gutil.log('> Listening at ' + uri + '\n')
   // when env is testing, don't need open it
 
   if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
