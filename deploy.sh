@@ -14,7 +14,7 @@ go generate ./app
 
 # Building an executable binary file
 # https://blog.codeship.com/building-minimal-docker-containers-for-go-applications/
-CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./dist/squirrel-server
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o ./dist/squirrel-server
 
 if [ $1 == "mini" ]; then
     # Building a minimal image, about 10MB.

@@ -5,7 +5,7 @@ IMAGE=lavenderx/squirrel-scratch
 build:
 	cd ./ui && npm run gulp build-prod && cd -
 	go generate ./app
-	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o $(BINARY_FILE)
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o $(BINARY_FILE)
 	docker build -f Dockerfile.scratch -t $(IMAGE) .
 
 clean:
