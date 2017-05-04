@@ -22,3 +22,14 @@ Golang Notes
 9. [Go官方库RPC开发指南](http://colobu.com/2016/09/18/go-net-rpc-guide/)
 
 10. [io.Reader & io.Writer](http://colobu.com/2016/08/29/go-io-Reader-and-io-Writer/)
+
+11. [如何监控 Golang 程序的垃圾回收](http://holys.im/2016/07/01/monitor-golang-gc/)
+
+12. [使用 Elastic Stack 来监控和调优 Golang 应用程序](https://my.oschina.net/u/569210/blog/852351)
+
+
+## Blogs
+
+1. [http://colobu.com/categories/Go/](http://colobu.com/categories/Go/)
+
+2. [http://xiaorui.cc/category/golang/](http://xiaorui.cc/category/golang/)
