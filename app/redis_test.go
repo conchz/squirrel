@@ -8,8 +8,7 @@ import (
 )
 
 func TestConnectToRedis(t *testing.T) {
-	config := LoadConfig()
-	client := ConnectToRedis(config)
+	client := GetRedisClient()
 
 	defer func(client *redis.Client) {
 		fmt.Println("Closing Redis client...")

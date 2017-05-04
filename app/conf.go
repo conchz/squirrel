@@ -11,8 +11,10 @@ type Config struct {
 		FilePath string `yaml:"filePath"`
 	} `yaml:"logging"`
 	MySQLConf struct {
-		Driver     string `yaml:"driver"`
-		DataSource string `yaml:"dataSource"`
+		Driver       string `yaml:"driver"`
+		DataSource   string `yaml:"dataSource"`
+		MaxIdleConns int `yaml:"maxIdleConns"`
+		MaxOpenConns int `yaml:"maxOpenConns"`
 	} `yaml:"mysql"`
 	RedisConf struct {
 		Address  string `yaml:"address"`

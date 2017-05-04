@@ -6,35 +6,45 @@ import (
 	"time"
 )
 
-type User struct {
-	Id          int64
-	Username    string `xorm:"varchar(20) not null unique 'user_name'"`
-	Password    string `xorm:"VARCHAR(20) not null"`
-	CreatedTime time.Time `xorm:"not null 'created_time'"`
-	UpdatedTime time.Time `xorm:"not null 'updated_time'"`
-}
-
-func (u *User) TableName() string {
-	return "tbl_user"
-}
+const (
+	timeZone         = "Asia/Shanghai"
+	mysqlStoreEngine = "InnoDB"
+	mysqlCharset     = "utf8mb4"
+)
 
 var engine *xorm.Engine
 
-func ConnectToMySQL(config *Config) *xorm.Engine {
-	if engine != nil {
-		return engine
+func init() {
+	err := connectToMySQL(LoadConfig())
+	if err != nil {
+		panic(err)
 	}
+}
 
+func connectToMySQL(config *Config) error {
 	mysqlConfig := config.MySQLConf
 
-	var engineErr error
-	engine, engineErr = xorm.NewEngine(mysqlConfig.Driver, mysqlConfig.DataSource)
-	if engineErr != nil {
-		panic(engineErr)
+	var err error
+	engine, err = xorm.NewEngine(mysqlConfig.Driver, mysqlConfig.DataSource)
+	if err != nil {
+		return err
 	}
 
-	location, _ := time.LoadLocation("Asia/Shanghai")
-	engine.TZLocation = location
+	location, err := time.LoadLocation(timeZone)
+	if err != nil {
+		return err
+	}
 
+	engine.TZLocation = location
+	engine.ShowSQL(true)
+	engine.StoreEngine(mysqlStoreEngine)
+	engine.Charset(mysqlCharset)
+	engine.SetMaxIdleConns(mysqlConfig.MaxIdleConns)
+	engine.SetMaxOpenConns(mysqlConfig.MaxOpenConns)
+
+	return nil
+}
+
+func GetXormEngine() *xorm.Engine {
 	return engine
 }
