@@ -33,7 +33,7 @@ func Assets() *rice.Box {
 	return assets
 }
 
-func ConfigFile() []byte {
+func GetAppConfBytes() []byte {
 	bytes, err := rice.MustFindBox("../conf").Bytes("app.yaml")
 	if err != nil {
 		panic(err)
