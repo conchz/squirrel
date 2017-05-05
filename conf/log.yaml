@@ -1,0 +1,24 @@
+level: "debug"
+development: false
+disableCaller: true
+disableStacktrace: true
+encoding: "console"
+encoderConfig:
+  messageKey: "message"
+  levelKey: "level"
+  timeKey: "time"
+  nameKey: "name"
+  callerKey: "caller"
+  stacktraceKey: "st"
+  levelEncoder: "capitalColor"
+  timeEncoder: "ISO8601"
+  durationEncoder: "string"
+  callerEncoder: "short"
+outputPaths:
+  - "stdout"
+  - "/var/log/squirrel/std_out.log"
+errorDispatcherPaths:
+  - "stderr"
+  - "/var/log/squirrel/std_err.log"
+errorOutputPaths:
+  - "stderr"

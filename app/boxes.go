@@ -41,3 +41,12 @@ func ConfigFile() []byte {
 
 	return bytes
 }
+
+func GetLogConfBytes() []byte {
+	bytes, err := rice.MustFindBox("../conf").Bytes("log.yaml")
+	if err != nil {
+		panic(err)
+	}
+
+	return bytes
+}

@@ -1,6 +1,11 @@
 package app
 
-import "gopkg.in/yaml.v2"
+import (
+	"gopkg.in/yaml.v2"
+	"sync"
+)
+
+var lock sync.RWMutex
 
 type Config struct {
 	ServerConf struct {
@@ -29,6 +34,9 @@ func LoadConfig() *Config {
 	if config != nil {
 		return config
 	}
+
+	lock.RLock()
+	defer lock.RUnlock()
 
 	bytes := ConfigFile()
 	err := yaml.Unmarshal(bytes, &config)

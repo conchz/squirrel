@@ -6,8 +6,8 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"github.com/labstack/gommon/log"
 	"github.com/lavenderx/squirrel/app"
+	"github.com/lavenderx/squirrel/app/log"
 	"net/http"
 	"time"
 )
@@ -29,10 +29,12 @@ var (
 )
 
 func init() {
+	config = app.LoadConfig()
+
 	assets := app.Assets()
 	assetsHandler = http.FileServer(assets.HTTPBox())
 
-	config = app.LoadConfig()
+	log.Init()
 
 	initMySQLConnection(config)
 	initRedisConnection(config)
@@ -41,11 +43,7 @@ func init() {
 func main() {
 	e := echo.New()
 
-	lvl, err := app.ParseLevel(config.LoggingConf.Level)
-	if err != nil {
-		panic(err)
-	}
-	log.SetLevel(lvl)
+	lvl := log.ParseLevel(config.LoggingConf.Level)
 	e.Logger.SetLevel(lvl)
 
 	e.Use(middleware.Recover())
@@ -84,6 +82,7 @@ func main() {
 
 	// Start server
 	address := fmt.Sprintf(":%v", fmt.Sprint(config.ServerConf.Port))
+	log.GetLogger().Info("Squirrel http server started on [::]%v")
 	e.Logger.Fatal(e.Start(address))
 }
 
