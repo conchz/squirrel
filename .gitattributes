@@ -2,3 +2,7 @@
 *.css linguist-language=Go
 *.html linguist-language=Go
 *.tpl linguist-language=Go
+*.vue linguist-language=Go
+*.sh linguist-language=Go
+*.vhost linguist-language=Go
+Makefile linguist-language=Go
