@@ -1,14 +1,17 @@
-package app
+package app_test
 
 import (
 	"errors"
 	"fmt"
+	"github.com/lavenderx/squirrel/app"
 	"gopkg.in/redis.v5"
 	"testing"
 )
 
 func TestConnectToRedis(t *testing.T) {
-	client := GetRedisClient()
+	app.ConnectToRedis(app.LoadConfig())
+
+	client := app.GetRedisClient()
 
 	defer func(client *redis.Client) {
 		fmt.Println("Closing Redis client...")

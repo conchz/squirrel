@@ -4,11 +4,7 @@ import "gopkg.in/redis.v5"
 
 var client *redis.Client
 
-func init() {
-	connectToRedis(LoadConfig())
-}
-
-func connectToRedis(config *Config) {
+func ConnectToRedis(config *Config) {
 	redisConfig := config.RedisConf
 	client = redis.NewClient(&redis.Options{
 		Addr:     redisConfig.Address,

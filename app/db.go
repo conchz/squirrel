@@ -3,25 +3,16 @@ package app
 import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
-	"time"
 )
 
 const (
-	timeZone         = "Asia/Shanghai"
 	mysqlStoreEngine = "InnoDB"
 	mysqlCharset     = "utf8mb4"
 )
 
 var engine *xorm.Engine
 
-func init() {
-	err := connectToMySQL(LoadConfig())
-	if err != nil {
-		panic(err)
-	}
-}
-
-func connectToMySQL(config *Config) error {
+func ConnectToMySQL(config *Config) error {
 	mysqlConfig := config.MySQLConf
 
 	var err error
@@ -30,12 +21,6 @@ func connectToMySQL(config *Config) error {
 		return err
 	}
 
-	location, err := time.LoadLocation(timeZone)
-	if err != nil {
-		return err
-	}
-
-	engine.TZLocation = location
 	engine.ShowSQL(true)
 	engine.StoreEngine(mysqlStoreEngine)
 	engine.Charset(mysqlCharset)

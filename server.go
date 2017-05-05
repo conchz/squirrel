@@ -33,6 +33,9 @@ func init() {
 	assetsHandler = http.FileServer(assets.HTTPBox())
 
 	config = app.LoadConfig()
+
+	initMySQLConnection(config)
+	initRedisConnection(config)
 }
 
 func main() {
@@ -137,4 +140,15 @@ func api(c echo.Context) error {
 	claims := user.Claims.(*JWTClaims)
 	username := claims.Username
 	return c.String(http.StatusOK, "Welcome "+username+"!")
+}
+
+func initMySQLConnection(config *app.Config) {
+	err := app.ConnectToMySQL(config)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func initRedisConnection(config *app.Config) {
+	app.ConnectToRedis(config)
 }
