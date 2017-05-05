@@ -37,6 +37,9 @@ RUN dpkg-reconfigure -f noninteractive tzdata
 # Stage App
 ADD ./dist/squirrel-server $GOPATH/bin
 
+# Create log directory
+RUN mkdir -p /var/log/squirrel
+
 # Add Nginx frontend host
 ADD ./docker/nginx-echo.vhost /etc/nginx/conf.d/default.conf
 

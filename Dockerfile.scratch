@@ -3,6 +3,8 @@ MAINTAINER Zongzhi Bai <dolphineor@gmail.com>
 
 ADD ./dist/squirrel-server /
 
+RUN mkdir -p /var/log/squirrel
+
 EXPOSE 7000
 
 CMD ["/squirrel-server"]
