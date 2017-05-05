@@ -1,4 +1,4 @@
-level: "debug"
+level: "info"
 development: false
 disableCaller: true
 disableStacktrace: true
@@ -10,7 +10,7 @@ encoderConfig:
   nameKey: "name"
   callerKey: "caller"
   stacktraceKey: "st"
-  levelEncoder: "capitalColor"
+  levelEncoder: "capitalColor" # {capital, capitalColor, color}, If `encoding` is "json", this value must be "capital".
   timeEncoder: "ISO8601"
   durationEncoder: "string"
   callerEncoder: "short"

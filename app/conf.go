@@ -11,10 +11,6 @@ type Config struct {
 	ServerConf struct {
 		Port uint16 `yaml:"port"`
 	} `yaml:"server"`
-	LoggingConf struct {
-		Level    string `yaml:"level"`
-		FilePath string `yaml:"filePath"`
-	} `yaml:"logging"`
 	MySQLConf struct {
 		Driver       string `yaml:"driver"`
 		DataSource   string `yaml:"dataSource"`
@@ -38,9 +34,8 @@ func LoadConfig() *Config {
 	lock.RLock()
 	defer lock.RUnlock()
 
-	bytes := ConfigFile()
-	err := yaml.Unmarshal(bytes, &config)
-	if err != nil {
+	bytes := GetAppConfBytes()
+	if err := yaml.Unmarshal(bytes, &config); err != nil {
 		panic(err)
 	}
 

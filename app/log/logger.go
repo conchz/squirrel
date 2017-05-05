@@ -1,119 +1,199 @@
 package log
 
 import (
+	"errors"
 	"fmt"
-	"github.com/labstack/gommon/log"
 	"github.com/lavenderx/squirrel/app"
 	"go.uber.org/zap"
-	"strings"
-	//"sync"
-	"github.com/lavenderx/squirrel/app/log/config"
+	"go.uber.org/zap/zapcore"
 	"gopkg.in/yaml.v2"
+	"sort"
+	"sync"
+	"time"
 )
 
-// https://github.com/emonuh/zap-error-dispatcher
+// reference: https://github.com/emonuh/zap-error-dispatcher
 
-var (
-	logger = new(zap.Logger)
-	//logger = new(zap.SugaredLogger)
-	//lock   = new(sync.RWMutex)
-)
-
-func GetLogger() *zap.Logger {
-	return logger
+type ZapLogConfig struct {
+	zap.Config           `json:",inline" yaml:",inline"`
+	ErrorDispatcherPaths []string `json:"errorDispatcherPaths" yaml:"errorDispatcherPaths"`
 }
 
-//func Debug(args ...interface{}) {
-//	logger.Debug(args...)
-//}
-//
-//func Debugf(template string, args ...interface{}) {
-//	logger.Debugf(template, args)
-//}
-//
-//func Info(args ...interface{}) {
-//	logger.Info(args...)
-//}
-//
-//func Infof(template string, args ...interface{}) {
-//	logger.Infof(template, args)
-//}
-//
-//func Warn(args ...interface{}) {
-//	logger.Warn(args...)
-//}
-//
-//func Warnf(template string, args ...interface{}) {
-//	logger.Warnf(template, args)
-//}
-//
-//func Error(args ...interface{}) {
-//	logger.Error(args...)
-//}
-//
-//func Errorf(template string, args ...interface{}) {
-//	logger.Errorf(template, args)
-//}
-//
-//func Fatal(args ...interface{}) {
-//	logger.Fatal(args...)
-//}
-//
-//func Fatalf(template string, args ...interface{}) {
-//	logger.Fatalf(template, args)
-//}
-//
-//func Panic(args ...interface{}) {
-//	logger.Panic(args...)
-//}
-//
-//func Panicf(template string, args ...interface{}) {
-//	logger.Panicf(template, args)
-//}
+var (
+	stat                      = 0
+	logger                    = new(zap.SugaredLogger)
+	lock                      = new(sync.RWMutex)
+	errNoEncoderNameSpecified = errors.New("no encoder name specified")
+)
 
-// ParseLevel takes a string level and returns the log level constant.
-func ParseLevel(lvl string) log.Lvl {
-	switch strings.ToUpper(lvl) {
-	case "DEBUG":
-		return log.DEBUG
-	case "INFO":
-		return log.INFO
-	case "WARN":
-		return log.WARN
-	case "ERROR":
-		return log.ERROR
-	case "OFF":
-		return log.OFF
-	}
+func Debug(args ...interface{}) {
+	logger.Debug(args...)
+}
 
-	panic(fmt.Errorf("not a valid log Level: %q", lvl))
+func Debugf(template string, args ...interface{}) {
+	logger.Debugf(template, args)
+}
+
+func Info(args ...interface{}) {
+	logger.Info(args...)
+}
+
+func Infof(template string, args ...interface{}) {
+	logger.Infof(template, args)
+}
+
+func Warn(args ...interface{}) {
+	logger.Warn(args...)
+}
+
+func Warnf(template string, args ...interface{}) {
+	logger.Warnf(template, args)
+}
+
+func Error(args ...interface{}) {
+	logger.Error(args...)
+}
+
+func Errorf(template string, args ...interface{}) {
+	logger.Errorf(template, args)
+}
+
+func Fatal(args ...interface{}) {
+	logger.Fatal(args...)
+}
+
+func Fatalf(template string, args ...interface{}) {
+	logger.Fatalf(template, args)
+}
+
+func Panic(args ...interface{}) {
+	logger.Panic(args...)
+}
+
+func Panicf(template string, args ...interface{}) {
+	logger.Panicf(template, args)
 }
 
 func Init() {
-	var _zapConfig config.ErrorDispatcherConfig
-	if err := yaml.Unmarshal(app.GetLogConfBytes(), &_zapConfig); err != nil {
+	if stat == 1 {
+		return
+	}
+
+	lock.RLock()
+	defer lock.RUnlock()
+
+	var zapLogConfig ZapLogConfig
+	if err := yaml.Unmarshal(app.GetLogConfBytes(), &zapLogConfig); err != nil {
 		panic(err)
 	}
 
 	var err error
-	logger, err = _zapConfig.Build()
+	logger, err = zapLogConfig.Build()
 	if err != nil {
 		panic(err)
 	}
+	stat = 1
+}
 
-	//logConf := app.LoadConfig().LoggingConf
-	//
-	//zapConfig := zap.NewProductionConfig()
-	//zapConfig.EncoderConfig.EncodeTime.UnmarshalText([]byte("ISO8601"))
-	//zapConfig.DisableStacktrace = true
-	//zapConfig.Level.UnmarshalText([]byte(logConf.Level))
-	//zapLogger, err := zapConfig.Build()
-	//if err != nil {
-	//	fmt.Errorf("%v", err)
-	//	return
-	//}
-	//
-	//lock.Lock()
-	//defer lock.Unlock()
-	//logger = zapLogger.WithOptions(zap.AddCallerSkip(1)).Sugar()
+func (c *ZapLogConfig) Build(options ...zap.Option) (*zap.SugaredLogger, error) {
+	enc, err := c.buildEncoder()
+	if err != nil {
+		return nil, err
+	}
+
+	sink, errDispSink, errSink, err := c.openSinks()
+	if err != nil {
+		return nil, err
+	}
+
+	baseCore := zapcore.NewCore(enc, sink, c.Level)
+	errCore := zapcore.NewCore(enc, errDispSink, c.Level)
+	errorDispatcher := NewErrorDispatcher(baseCore, errCore)
+	log := zap.New(
+		errorDispatcher,
+		c.buildOptions(errSink)...,
+	)
+	if len(options) > 0 {
+		log = log.WithOptions(options...)
+	}
+	return log.Sugar(), nil
+}
+
+func (c *ZapLogConfig) buildEncoder() (encoder zapcore.Encoder, err error) {
+	if len(c.Encoding) == 0 {
+		err = errNoEncoderNameSpecified
+		return
+	}
+	switch c.Encoding {
+	case "console":
+		encoder = zapcore.NewConsoleEncoder(c.EncoderConfig)
+	case "json":
+		encoder = zapcore.NewJSONEncoder(c.EncoderConfig)
+	default:
+		err = fmt.Errorf("no encoder registered for name %q", c.Encoding)
+	}
+	return
+}
+
+func (c *ZapLogConfig) openSinks() (zapcore.WriteSyncer, zapcore.WriteSyncer, zapcore.WriteSyncer, error) {
+	sink, closeOut, err := zap.Open(c.OutputPaths...)
+	if err != nil {
+		closeOut()
+		return nil, nil, nil, err
+	}
+	errDispSink, closeErrDisp, err := zap.Open(c.ErrorDispatcherPaths...)
+	if err != nil {
+		closeOut()
+		closeErrDisp()
+		return nil, nil, nil, err
+	}
+	errSink, closeErr, err := zap.Open(c.ErrorOutputPaths...)
+	if err != nil {
+		closeOut()
+		closeErrDisp()
+		closeErr()
+		return nil, nil, nil, err
+	}
+	return sink, errDispSink, errSink, nil
+}
+
+func (c *ZapLogConfig) buildOptions(errSink zapcore.WriteSyncer) []zap.Option {
+	options := []zap.Option{zap.ErrorOutput(errSink)}
+
+	if c.Development {
+		options = append(options, zap.Development())
+	}
+
+	if !c.DisableCaller {
+		options = append(options, zap.AddCaller())
+	}
+
+	stackLevel := zap.ErrorLevel
+	if c.Development {
+		stackLevel = zap.WarnLevel
+	}
+	if !c.DisableStacktrace {
+		options = append(options, zap.AddStacktrace(stackLevel))
+	}
+
+	if c.Sampling != nil {
+		options = append(options, zap.WrapCore(func(core zapcore.Core) zapcore.Core {
+			return zapcore.NewSampler(core, time.Second, int(c.Sampling.Initial), int(c.Sampling.Thereafter))
+		}))
+	}
+
+	if len(c.InitialFields) > 0 {
+		fs := make([]zapcore.Field, 0, len(c.InitialFields))
+		keys := make([]string, 0, len(c.InitialFields))
+		for k := range c.InitialFields {
+			keys = append(keys, k)
+		}
+		sort.Strings(keys)
+		for _, k := range keys {
+			fs = append(fs, zap.Any(k, c.InitialFields[k]))
+		}
+		options = append(options, zap.Fields(fs...))
+	}
+
+	return options
 }

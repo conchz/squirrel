@@ -1,10 +1,6 @@
 server:
   port: 7000
 
-logging:
-  level: info
-  filePath: ""
-
 mysql:
   driver: mysql
   dataSource: root:1QaZxDr5$@tcp(127.0.0.1:3306)/squirrel?charset=utf8mb4
