@@ -17,10 +17,10 @@ go generate ./app
 CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./dist/squirrel-server
 
 if [ $1 == "mini" ]; then
-    # Building a minimal image, about 10MB.
-    docker build -f Dockerfile.scratch -t lavenderx/squirrel-scratch .
+    # Building a minimal image, about 20MB.
+    docker build -f Dockerfile.alpine -t lavenderx/squirrel-alpine .
     # Running a temporary container to start application
-    docker run -it --rm -p 8081:7000 lavenderx/squirrel-scratch
+    docker run -it --rm -p 8081:7000 lavenderx/squirrel-alpine
 else
     # Building a normal image
     docker build -t lavenderx/squirrel .

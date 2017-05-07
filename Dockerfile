@@ -2,7 +2,7 @@
 ###
 ### Docker: https://www.docker.com
 
-FROM nginx:1.10.3
+FROM nginx:1.12.0
 MAINTAINER Zongzhi Bai <dolphineor@gmail.com>
 
 # Tell debconf to run in non-interactive mode

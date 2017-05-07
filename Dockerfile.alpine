@@ -1,4 +1,4 @@
-FROM scratch
+FROM alpine：3.5
 MAINTAINER Zongzhi Bai <dolphineor@gmail.com>
 
 ADD ./dist/squirrel-server /
