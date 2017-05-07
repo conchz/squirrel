@@ -3,11 +3,11 @@ MAINTAINER Zongzhi Bai <dolphineor@gmail.com>
 
 ADD ./dist/squirrel-server /
 
+RUN apk update && apk add ca-certificates && \
+    apk add tzdata && \
+    ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+    echo "Asia/Shanghai" > /etc/timezone
 RUN mkdir -p /var/log/squirrel
-RUN apk add tzdata
-RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-RUN echo "Asia/Shanghai" > /etc/timezone
-RUN date
 
 EXPOSE 7000
 
