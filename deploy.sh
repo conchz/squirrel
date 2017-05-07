@@ -16,7 +16,7 @@ go generate ./app
 # https://blog.codeship.com/building-minimal-docker-containers-for-go-applications/
 CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./dist/squirrel-server
 
-if [ $1 == "mini" ]; then
+if [ "$1" == "mini" ]; then
     # Building a minimal image, about 20MB.
     docker build -f Dockerfile.alpine -t lavenderx/squirrel-alpine .
     # Running a temporary container to start application
