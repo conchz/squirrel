@@ -1,6 +1,6 @@
 # https://seisman.github.io/how-to-write-makefile/index.html
 BINARY_FILE=./dist/squirrel-server
-IMAGE=lavenderx/squirrel-scratch
+IMAGE=lavenderx/squirrel-alpine
 
 build:
 	cd ./ui && npm run gulp build-prod && cd -
