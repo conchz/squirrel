@@ -1,7 +1,7 @@
 # See `go.uber.org/zap.Config`
 level: "info"
 development: false
-disableCaller: false
+disableCaller: true
 disableStacktrace: true
 encoding: "console"
 encoderConfig:
