@@ -8,6 +8,7 @@ import (
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/yaml.v2"
 	"sort"
+	"strings"
 	"sync"
 	"time"
 )
@@ -20,11 +21,16 @@ type ZapLogConfig struct {
 }
 
 var (
-	stat                      = 0
-	logger                    = new(zap.SugaredLogger)
-	lock                      = new(sync.RWMutex)
-	errNoEncoderNameSpecified = errors.New("no encoder name specified")
+	stat                      uint8 = 0
+	isDebug                         = false
+	logger                          = new(zap.SugaredLogger)
+	lock                            = new(sync.RWMutex)
+	errNoEncoderNameSpecified       = errors.New("no encoder name specified")
 )
+
+func IsDebug() bool {
+	return isDebug
+}
 
 func Debug(args ...interface{}) {
 	logger.Debug(args...)
@@ -92,6 +98,8 @@ func Init() {
 	if err != nil {
 		panic(err)
 	}
+
+	isDebug = strings.ToUpper(zapLogConfig.Level.Level().String()) == zapcore.DebugLevel.CapitalString()
 	stat = 1
 }
 
