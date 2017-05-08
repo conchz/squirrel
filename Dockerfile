@@ -40,12 +40,9 @@ ADD ./dist/squirrel-server $GOPATH/bin
 # Create log directory
 RUN mkdir -p /var/log/squirrel
 
-# Add Nginx frontend host
-ADD ./docker/nginx-echo.vhost /etc/nginx/conf.d/default.conf
-
 # Setup Nginx
-RUN sed -i -e"s/keepalive_timeout\s*65/keepalive_timeout 3/" /etc/nginx/nginx.conf
-RUN sed -i -e"s/keepalive_timeout 2/keepalive_timeout 3;\n\tclient_max_body_size 100m/" /etc/nginx/nginx.conf
+ADD ./docker/nginx-echo.vhost /etc/nginx/conf.d/default.conf
+RUN sed -i "s/#gzip/gzip/g" /etc/nginx/nginx.conf
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 # Setup Supervisord
