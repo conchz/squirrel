@@ -21,8 +21,10 @@ if [ "$1" == "mini" ]; then
     docker build -f Dockerfile.alpine -t lavenderx/squirrel-alpine .
     # Running a temporary container to start application
     docker run -it --rm -p 8081:7000 lavenderx/squirrel-alpine
+elif [ "$1" == "caddy" ]; then
+    docker build -f Dockerfile.caddy -t lavenderx/squirrel-caddy .
+    docker run -it --rm -p 8081:80 lavenderx/squirrel-caddy
 else
-    # Building a normal image
     docker build -t lavenderx/squirrel .
     docker run -it --rm -p 8081:80 lavenderx/squirrel
 fi

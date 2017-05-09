@@ -1,30 +1,48 @@
+# https://caddyserver.com/docs
 # https://caddyserver.com/tutorial/caddyfile
 # https://letsencrypt.org/
 0.0.0.0:80 {
-        log /var/log/caddy/access.log {
-                rotate_size 50 # Rotate after 50 MB
-                rotate_age  60 # Keep rotated files for 60 days
-                rotate_keep 20 # Keep at most 20 log files
-        }
-        errors /var/log/caddy/error.log {
-                rotate_size 50
-                rotate_age  30
-                rotate_keep 10
-        }
+    log /var/log/caddy/access.log {
+        rotate_size 50 # Rotate after 50 MB
+        rotate_age  60 # Keep rotated files for 60 days
+        rotate_keep 20 # Keep at most 20 log files
+    }
+    errors /var/log/caddy/error.log {
+        rotate_size 50
+        rotate_age  15
+        rotate_keep 5
+    }
 
-        proxy / http://127.0.0.1:8081 {
-                header_upstream Host {host}
-                header_upstream X-Real-IP {remote}
-                header_upstream X-Forwarded-For {remote}
-                header_upstream X-Forwarded-Proto {scheme}
-        }
+    ext .html .htm
 
-        # https://caddyserver.com/docs/http.cors
-        cors / {
-                origin            *
-                methods           GET,POST,PUT,DELETE
-                allow_credentials false
-                max_age           3600
-                allowed_headers   Origin,Content-Type,WWW-Authenticate,Authorization
-        }
+    gzip {
+        ext        .css .eot .html .js .svg .ttf .txt .xml
+        not        /static/images
+        level      9
+        min_length 256
+    }
+
+    header / {
+        Access-Control-Allow-Origin  *
+        Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+        X-XSS-Protection "1; mode=block"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        -Server
+    }
+
+    proxy / http://127.0.0.1:7000 {
+        header_upstream Host {host}
+        header_upstream X-Real-IP {remote}
+        header_upstream X-Forwarded-For {remote}
+        header_upstream X-Forwarded-Proto {scheme}
+    }
+
+    cors / {
+        origin            *
+        methods           GET,POST,PUT,DELETE
+        allow_credentials false
+        max_age           3600
+        allowed_headers   Origin,Content-Type,WWW-Authenticate,Authorization
+    }
 }

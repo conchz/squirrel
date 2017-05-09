@@ -46,13 +46,12 @@ RUN sed -i "s/#gzip/gzip/g" /etc/nginx/nginx.conf
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 # Setup Supervisord
-ADD ./docker/supervisord.conf /etc/supervisord.conf
+ADD ./docker/supervisord-nginx.conf /etc/supervisord.conf
 
 # Set start script permissions
 ADD ./docker/startup.sh /startup.sh
 RUN chmod 755 /startup.sh
 
-# Expose Web Frontend (Nginx) port only
 EXPOSE 80
 
 # Start required services when docker is instantiated
