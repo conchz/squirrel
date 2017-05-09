@@ -31,4 +31,4 @@ ADD ./docker/supervisord-caddy.conf /etc/supervisord.conf
 
 EXPOSE 80
 
-ENTRYPOINT ["supervisord", "-n"]
+ENTRYPOINT ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
