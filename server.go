@@ -108,7 +108,6 @@ func main() {
 	e.Logger.SetLevel(echo_log.OFF)
 
 	e.Use(middleware.Recover())
-	e.Use(middleware.RequestID())
 	e.Use(middleware.Secure())
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
