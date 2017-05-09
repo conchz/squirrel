@@ -21,15 +21,14 @@ RUN curl "https://caddyserver.com/download/linux/amd64?plugins=dns,http.cors,htt
     | tar --no-same-owner -C /usr/bin/ -xz caddy
 
 RUN apk del devs
-RUN mkdir -p /etc/caddy && \
-    mkdir -p /var/log/supervisor && \
+RUN mkdir -p /var/log/supervisor && \
     mkdir -p /var/log/caddy && \
     mkdir -p /var/log/squirrel
 
 ADD ./Caddyfile /etc/caddy/Caddyfile
 ADD ./dist/squirrel-server /usr/local/bin/
-ADD ./docker/supervisord-caddy.conf /etc/supervisor/supervisord.conf
+ADD ./docker/supervisord-caddy.conf /etc/supervisord.conf
 
 EXPOSE 80
 
-ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisor/supervisord.conf"]
+ENTRYPOINT ["supervisord", "-n"]
