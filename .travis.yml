@@ -1,20 +1,14 @@
 # https://docs.travis-ci.com/user/getting-started/
 language: go
-
 go:
   - tip
-
 branches:
   only:
     - master
-
 os:
   - linux
-
 dist: trusty
-
 sudo: required
-
 env:
   - TRAVIS_NODE_VERSION="6"
 
@@ -27,15 +21,15 @@ before_install:
   - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
   - redis-server /etc/redis/redis.conf --daemonize yes --port 16379 --requirepass '5RdXzAq1'
   - docker pull alpine:3.5
-
 install:
   - go get -v github.com/GeertJohan/go.rice/rice
   - go get -v github.com/Masterminds/glide
   - glide install
   - cd $TRAVIS_BUILD_DIR/ui
-  - rm -rf node_modules/ && npm install
+  - rm -rf node_modules/
+  - npm install -g gulp
+  - npm install
   - cd $TRAVIS_BUILD_DIR
-
 script:
   - make test
   - make package
