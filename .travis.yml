@@ -10,7 +10,7 @@ branches:
 
 os:
   - linux
-dist: xenial
+dist: trusty
 sudo: required
 
 services:
