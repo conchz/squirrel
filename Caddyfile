@@ -22,13 +22,12 @@
         min_length 256
     }
 
-    header / {
+    header /api {
         Access-Control-Allow-Origin  *
         Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
         X-XSS-Protection "1; mode=block"
         X-Content-Type-Options "nosniff"
         X-Frame-Options "DENY"
-        -Server
     }
 
     proxy / 127.0.0.1:7000 {
