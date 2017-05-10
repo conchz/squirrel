@@ -10,20 +10,24 @@ branches:
 
 os:
   - linux
+
 dist: trusty
+
 sudo: required
+
+env:
+  - TRAVIS_NODE_VERSION="4"
 
 services:
   - redis-server
   - docker
 
 before_install:
-  - curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-  - sudo apt-get install -y build-essential nodejs
   - sudo redis-server /etc/redis/redis.conf --daemonize yes --port 16379 --requirepass '5RdXzAq1'
   - docker pull alpine:3.5
 
 install:
+  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
   - go get -v github.com/Masterminds/glide
   - glide install
   - cd $TRAVIS_BUILD_DIR/ui
