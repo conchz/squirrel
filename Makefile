@@ -12,4 +12,7 @@ clean:
 	if [ -f $(BINARY_FILE) ]; then rm -f $(BINARY_FILE); fi
 	go clean
 
-exec: clean build
+test:
+	go test -v ./app/...
+
+package: clean build
