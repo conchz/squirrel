@@ -10,7 +10,7 @@ branches:
 
 os:
   - linux
-
+dist: xenial
 sudo: required
 
 services:
@@ -27,7 +27,7 @@ install:
   - go get -v github.com/Masterminds/glide
   - glide install
   - cd $TRAVIS_BUILD_DIR/ui
-  - npm install --registry=https://registry.npm.taobao.org
+  - npm install
   - cd $TRAVIS_BUILD_DIR
 
 script:
