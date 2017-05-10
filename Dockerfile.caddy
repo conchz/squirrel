@@ -27,8 +27,8 @@ RUN mkdir -p /var/log/supervisor && \
 
 ADD ./Caddyfile /etc/caddy/Caddyfile
 ADD ./dist/squirrel-server /usr/local/bin/
-ADD ./docker/supervisord-caddy.conf /etc/supervisord.conf
+ADD ./docker/supervisord-caddy.conf /etc/supervisor/supervisord.conf
 
 EXPOSE 80
 
-ENTRYPOINT ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
+ENTRYPOINT ["supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
