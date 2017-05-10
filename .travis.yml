@@ -29,6 +29,7 @@ before_install:
   - docker pull alpine:3.5
 
 install:
+  - go get -v github.com/GeertJohan/go.rice/rice
   - go get -v github.com/Masterminds/glide
   - glide install
   - cd $TRAVIS_BUILD_DIR/ui
