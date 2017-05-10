@@ -1,5 +1,5 @@
-hash: 700df1873a4097e503b2a2848818b883e9a3fec62dd98d266a90a36586b27367
-updated: 2017-05-05T15:22:28.099492015+08:00
+hash: 63f2b6ddb456f018846d6d4b7940f977e38f088981f85fa2b21faf9648f0a597
+updated: 2017-05-10T18:00:56.036039528+08:00
 imports:
 - name: github.com/daaku/go.zipexe
   version: a5fe2436ffcb3236e175e5149162b41cd28bd27d
@@ -36,6 +36,8 @@ imports:
   version: ded68f7a9561c023e790de24279db7ebf473ea80
 - name: github.com/mattn/go-isatty
   version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
+- name: github.com/smallnest/rpcx
+  version: 7aaa5bb7f166f1e70b6929bc6d1bfbb9e5e52b39
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasthttp
