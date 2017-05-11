@@ -1,4 +1,7 @@
 package: github.com/lavenderx/squirrel
+license: MIT
+excludeDirs:
+- ui/node_modules
 import:
 - package: github.com/labstack/echo
   version: v3.1.0
@@ -17,3 +20,4 @@ import:
   version: ^1.2.0
 - package: github.com/smallnest/rpcx
   version: ^1.3
+- package: github.com/willf/bitset

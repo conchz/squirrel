@@ -1,5 +1,5 @@
-hash: 63f2b6ddb456f018846d6d4b7940f977e38f088981f85fa2b21faf9648f0a597
-updated: 2017-05-10T18:00:56.036039528+08:00
+hash: 36d68ff46089ff22a8487e19c05dbd64ec94e95a6b946a1d4fc4923dd4a9b2cf
+updated: 2017-05-11T16:36:24.736768654+08:00
 imports:
 - name: github.com/daaku/go.zipexe
   version: a5fe2436ffcb3236e175e5149162b41cd28bd27d
@@ -44,6 +44,8 @@ imports:
   version: fc109d6887b5edb43510d924d14d735f3975fb51
 - name: github.com/valyala/fasttemplate
   version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
+- name: github.com/willf/bitset
+  version: 988f4f24992fc745de53c42df0da6581e42a6686
 - name: go.uber.org/atomic
   version: 4e336646b2ef9fc6e47be8e21594178f98e5ebcf
 - name: go.uber.org/zap
