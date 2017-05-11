@@ -7,10 +7,10 @@ A modern [*Golang*](https://golang.org/) web application scaffold, [*Echo*](http
 ## Quick Start
 
 #### Starting Server
-![Starting Server](http://o81mq23fu.bkt.clouddn.com/idea_squirrel_server_startup.png)
+![Starting Server](docs/images/idea_squirrel_server_startup.png)
 
 #### Starting UI
-![Starting UI](http://o81mq23fu.bkt.clouddn.com/idea_squirrel_ui_startup.png)
+![Starting UI](docs/images/idea_squirrel_ui_startup.png)
 
 ## Deploying to Docker
 
