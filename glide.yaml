@@ -28,4 +28,4 @@ import:
 - package: github.com/coreos/etcd
   version: v3.1.7
   subpackages:
-  - client
+  - clientv3
