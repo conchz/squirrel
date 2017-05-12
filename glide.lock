@@ -1,6 +1,10 @@
-hash: 36d68ff46089ff22a8487e19c05dbd64ec94e95a6b946a1d4fc4923dd4a9b2cf
-updated: 2017-05-11T16:36:24.736768654+08:00
+hash: da136ee7b39eff116f64a1480994c6148332820eac054f6e208f72293da49c00
+updated: 2017-05-12T09:51:45.929609029+08:00
 imports:
+- name: github.com/coreos/etcd
+  version: 43b75072bfaca5a7c35c718179defbcabd9a0886
+  subpackages:
+  - client
 - name: github.com/daaku/go.zipexe
   version: a5fe2436ffcb3236e175e5149162b41cd28bd27d
 - name: github.com/dgrijalva/jwt-go
@@ -17,6 +21,10 @@ imports:
   version: e8409d73255791843585964791443dbad877058c
 - name: github.com/go-xorm/xorm
   version: 3c8314e91603f0bfa6a228c1a0fea8a9e298f6d9
+- name: github.com/gogo/protobuf
+  version: 100ba4e885062801d56799d78530b73b178a78f3
+  subpackages:
+  - proto
 - name: github.com/json-iterator/go
   version: abcf2759ed264810fa140330c0d957f4661f5425
 - name: github.com/kardianos/osext

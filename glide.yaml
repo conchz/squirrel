@@ -3,6 +3,7 @@ license: MIT
 excludeDirs:
 - ui/node_modules
 import:
+- package: github.com/willf/bitset
 - package: github.com/labstack/echo
   version: v3.1.0
 - package: github.com/go-sql-driver/mysql
@@ -18,6 +19,13 @@ import:
   version: ^1.3.0
 - package: go.uber.org/atomic
   version: ^1.2.0
+- package: github.com/gogo/protobuf
+  version: v0.4
+  subpackages:
+  - proto
 - package: github.com/smallnest/rpcx
   version: ^1.3
-- package: github.com/willf/bitset
+- package: github.com/coreos/etcd
+  version: v3.1.7
+  subpackages:
+  - client
