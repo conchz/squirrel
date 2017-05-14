@@ -1,47 +1,38 @@
 package model
 
 import (
-	"fmt"
-	"github.com/go-xorm/xorm"
 	"github.com/lavenderx/squirrel/app"
+	"github.com/lavenderx/squirrel/app/crypto"
 	"testing"
 	"time"
 )
 
 func init() {
-	config := app.LoadConfig()
-	if err := app.ConnectToMySQL(config); err != nil {
+	app.ConnectToMySQL(app.LoadConfig())
+
+	engine := app.GetXormEngine()
+	if err := engine.Sync2(new(User)); err != nil {
 		panic(err)
 	}
 }
 
-func TestUserInsert(t *testing.T) {
-	user := User{
+func TestUser_Insert(t *testing.T) {
+	user := &User{
 		Username:    "Baymax",
-		Password:    "test1234",
+		Password:    crypto.EncryptPassword([]byte("test1234")),
 		Cellphone:   "19012345678",
 		CreatedTime: time.Now(),
 		UpdatedTime: time.Now(),
 	}
 
-	engine := app.GetXormEngine()
-	if err := engine.Sync2(user); err != nil {
-		panic(err)
-	}
-
-	defer func(engine *xorm.Engine) {
-		fmt.Println("Closing MySQL client...")
-		err := engine.Close()
-		if err != nil {
-			fmt.Printf("%v\n", "Closing MySQL client failed!")
-			panic(err)
-		}
-	}(engine)
-
-	affectedNumber, err := user.Insert(user)
+	affected, err := app.Insert(user)
 	if err != nil {
 		panic(err)
 	}
+	t.Logf("Affect number: %d, User: %+v\n", affected, user)
+}
 
-	fmt.Printf("%v records are affected\n", affectedNumber)
+func TestUser_FindById(t *testing.T) {
+	user := app.FindById(1, new(User))
+	t.Logf("User: %+v\n", user)
 }

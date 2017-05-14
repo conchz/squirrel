@@ -9,6 +9,7 @@ import (
 	echo_log "github.com/labstack/gommon/log"
 	"github.com/lavenderx/squirrel/app"
 	"github.com/lavenderx/squirrel/app/log"
+	"github.com/lavenderx/squirrel/app/model"
 	"net/http"
 	"time"
 )
@@ -98,8 +99,8 @@ func init() {
 	log.Init()
 
 	// Init MySQL & Redis client
-	initMySQLConnection(config)
-	initRedisConnection(config)
+	initMySQL(config)
+	initRedis(config)
 }
 
 func main() {
@@ -201,13 +202,15 @@ func api(c echo.Context) error {
 	return c.String(http.StatusOK, "Welcome "+username+"!")
 }
 
-func initMySQLConnection(config *app.Config) {
-	err := app.ConnectToMySQL(config)
-	if err != nil {
+func initMySQL(config *app.Config) {
+	app.ConnectToMySQL(config)
+
+	engine := app.GetXormEngine()
+	if err := engine.Sync2(new(model.User)); err != nil {
 		panic(err)
 	}
 }
 
-func initRedisConnection(config *app.Config) {
+func initRedis(config *app.Config) {
 	app.ConnectToRedis(config)
 }

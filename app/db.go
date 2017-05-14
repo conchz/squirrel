@@ -12,24 +12,31 @@ const (
 
 var engine *xorm.Engine
 
-func ConnectToMySQL(config *Config) error {
+func ConnectToMySQL(config *Config) {
 	mysqlConfig := config.MySQLConf
 
 	var err error
 	engine, err = xorm.NewEngine(mysqlConfig.Driver, mysqlConfig.DataSource)
 	if err != nil {
-		return err
+		panic(err)
 	}
 
-	engine.ShowSQL(true)
+	engine.ShowSQL(false)
 	engine.StoreEngine(mysqlStoreEngine)
 	engine.Charset(mysqlCharset)
 	engine.SetMaxIdleConns(mysqlConfig.MaxIdleConns)
 	engine.SetMaxOpenConns(mysqlConfig.MaxOpenConns)
-
-	return nil
 }
 
 func GetXormEngine() *xorm.Engine {
 	return engine
+}
+
+func Insert(bean interface{}) (int64, error) {
+	return engine.Insert(bean)
+}
+
+func FindById(id int64, bean interface{}) interface{} {
+	engine.Id(id).Get(bean)
+	return bean
 }

@@ -8,7 +8,7 @@ import (
 )
 
 // Example of Client.Post()
-func TestClientPost(t *testing.T) {
+func TestClient_Post(t *testing.T) {
 	// Create a new client(创建一个新的Client实例).
 	c := &Client{AppKey: "", AppSecret: "", UseHTTPS: false}
 
@@ -86,7 +86,7 @@ func TestClientPost(t *testing.T) {
 }
 
 // Example of Client.Exec()
-func TestClientExec(t *testing.T) {
+func TestClient_Exec(t *testing.T) {
 	// Create a new client(创建一个新的Client实例).
 	c := &Client{AppKey: "", AppSecret: "", UseHTTPS: false}
 
