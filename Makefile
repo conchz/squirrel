@@ -10,7 +10,7 @@ build:
 	cd ./ui && npm run gulp build-prod && cd -
 	go generate ./app
 	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o $(BINARY_FILE)
-	docker build -t $(IMAGE) .
+	docker build -f Dockerfile -t $(IMAGE) .
 
 clean:
 	if [ -f $(BINARY_FILE) ]; then rm -f $(BINARY_FILE); fi

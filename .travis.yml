@@ -26,7 +26,6 @@ before_install:
   # https://docs.travis-ci.com/user/customizing-the-build/#Installing-a-Second-Programming-language
   - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
   - redis-server /etc/redis/redis.conf --daemonize yes --port 16379 --requirepass '5RdXzAq1'
-  - docker pull alpine:3.5
   - go get -v github.com/GeertJohan/go.rice/rice
   - go get -v github.com/Masterminds/glide
 
