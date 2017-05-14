@@ -11,8 +11,14 @@ dist: trusty
 sudo: required
 env:
   - TRAVIS_NODE_VERSION="6"
+addons:
+  apt:
+    packages:
+    - mysql-client-core-5.6
+    - mysql-client-5.6
 
 services:
+  - mysql
   - redis-server
   - docker
 
@@ -21,13 +27,15 @@ before_install:
   - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
   - redis-server /etc/redis/redis.conf --daemonize yes --port 16379 --requirepass '5RdXzAq1'
   - docker pull alpine:3.5
-  - docker run --name mysql --net host -e MYSQL_ROOT_PASSWORD=1QaZxDr5$ -d mysql:5.7
   - go get -v github.com/GeertJohan/go.rice/rice
   - go get -v github.com/Masterminds/glide
 
 install:
   # Install project dependencies
   - make install
+
+before_script:
+  - mysql -u root -e "USE mysql;\nCREATE DATABASE IF NOT EXISTS squirrel DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_general_ci;\nCREATE USER 'kiwi'@'localhost' IDENTIFIED BY 'test1234$';\nGRANT ALL PRIVILEGES ON squirrel.* TO 'kiwi'@'localhost' IDENTIFIED BY 'test1234$';\nSET GLOBAL TIME_ZONE = '+8:00';\nSET TIME_ZONE = '+8:00';\nFLUSH PRIVILEGES;\n"
 
 script:
   - make test

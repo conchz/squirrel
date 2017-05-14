@@ -3,7 +3,7 @@ server:
 
 mysql:
   driver: mysql
-  dataSource: root:1QaZxDr5$@tcp(127.0.0.1:3306)/squirrel?charset=utf8mb4
+  dataSource: kiwi:test1234$@tcp(127.0.0.1:3306)/squirrel?charset=utf8mb4
   maxIdleConns: 10
   maxOpenConns: 100
 
