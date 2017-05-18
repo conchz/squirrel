@@ -15,5 +15,21 @@ go generate ./app
 # Building an executable binary file
 CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./dist/squirrel-server
 
+# Building docker image
 docker build -t lavenderx/squirrel .
-docker run --name squirrel-demo -it --rm -p 8081:7000 lavenderx/squirrel
+
+containerName=squirrel-demo
+isRunning=$(docker inspect --format="{{ .State.Running }}" ${containerName} 2> /dev/null)
+
+if [ $? -eq 1 ];  then
+    printf "No squirrel container is running!\n"
+else
+    # Checking container running status
+    if [ "${isRunning}" = "true" ];  then
+        docker stop ${containerName}
+    fi
+
+    docker rm ${containerName}
+fi
+
+docker run --name ${containerName} --net host -it --rm lavenderx/squirrel
