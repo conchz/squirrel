@@ -15,5 +15,5 @@ go generate ./app
 # Building an executable binary file
 CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./dist/squirrel-server
 
-docker build -t lavenderx/squirrel-caddy .
-docker run -it --rm -p 8081:80 lavenderx/squirrel-caddy
+docker build -t lavenderx/squirrel .
+docker run --name squirrel-demo -it --rm -p 8081:7000 lavenderx/squirrel

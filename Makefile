@@ -1,6 +1,6 @@
 # https://seisman.github.io/how-to-write-makefile/index.html
 BINARY_FILE=./dist/squirrel-server
-IMAGE=lavenderx/squirrel-caddy
+IMAGE=lavenderx/squirrel
 
 install:
 	cd ./ui && rm -rf node_modules/ && npm install && cd -
