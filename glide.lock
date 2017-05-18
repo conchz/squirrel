@@ -1,5 +1,5 @@
-hash: 10d00b577ef07d66d7089a858174c175e5963e91221743cc56530b959ee20e0d
-updated: 2017-05-12T11:32:45.913023591+08:00
+hash: 14fd95a12592af17f2e6f48c8b43f16a4cc858e097ec4c3b80f2d6fd1ea5789a
+updated: 2017-05-18T13:52:25.473634721+08:00
 imports:
 - name: github.com/coreos/etcd
   version: 43b75072bfaca5a7c35c718179defbcabd9a0886
@@ -44,6 +44,8 @@ imports:
   version: ded68f7a9561c023e790de24279db7ebf473ea80
 - name: github.com/mattn/go-isatty
   version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
+- name: github.com/nsqio/go-nsq
+  version: b2d0b4429f2082bc44babe089418d8da16d71e8a
 - name: github.com/smallnest/rpcx
   version: 7aaa5bb7f166f1e70b6929bc6d1bfbb9e5e52b39
 - name: github.com/valyala/bytebufferpool
@@ -57,7 +59,7 @@ imports:
 - name: go.uber.org/atomic
   version: 4e336646b2ef9fc6e47be8e21594178f98e5ebcf
 - name: go.uber.org/zap
-  version: 6a4e056f2cc954cfec3581729e758909604b3f76
+  version: fab453050a7a08c35f31fc5fff6f2dbd962285ab
   subpackages:
   - buffer
   - internal/bufferpool
@@ -70,6 +72,8 @@ imports:
   subpackages:
   - acme
   - acme/autocert
+  - pbkdf2
+  - scrypt
 - name: golang.org/x/net
   version: ffcf1bedda3b04ebb15a168a59800a73d6dc0f4d
   subpackages:
