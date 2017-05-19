@@ -7,25 +7,27 @@ import (
 	"time"
 )
 
+var mySQLTemplate *app.MySQLTemplate
+
 func init() {
 	app.ConnectToMySQL(app.LoadConfig())
 
-	engine := app.GetXormEngine()
-	if err := engine.Sync2(new(User)); err != nil {
+	mySQLTemplate = app.GetMySQLTemplate()
+	if err := mySQLTemplate.XormEngine().Sync2(new(User)); err != nil {
 		panic(err)
 	}
 }
 
 func TestUser_Insert(t *testing.T) {
 	user := &User{
-		Username:    "Baymax",
-		Password:    crypto.EncryptPassword([]byte("test1234")),
-		Cellphone:   "19012345678",
+		Username:    "test",
+		Password:    crypto.EncryptPassword([]byte("testSecret")),
+		Cellphone:   "156××××××××",
 		CreatedTime: time.Now(),
 		UpdatedTime: time.Now(),
 	}
 
-	affected, err := app.Insert(user)
+	affected, err := mySQLTemplate.Insert(user)
 	if err != nil {
 		panic(err)
 	}
@@ -33,6 +35,6 @@ func TestUser_Insert(t *testing.T) {
 }
 
 func TestUser_FindById(t *testing.T) {
-	user := app.FindById(1, new(User))
+	user := mySQLTemplate.GetById(1, new(User))
 	t.Logf("User: %+v\n", user)
 }

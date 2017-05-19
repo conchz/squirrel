@@ -3,6 +3,8 @@ package crypto
 import (
 	"crypto/aes"
 	"crypto/cipher"
+	"crypto/md5"
+	"encoding/hex"
 	"fmt"
 	"golang.org/x/crypto/scrypt"
 )
@@ -13,6 +15,8 @@ import (
 var (
 	commonIV = []byte{0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f}
 	salt     = []byte("AES256Key-Squirrel32")
+	salt1    = "!@#$%"
+	salt2    = "^&*()"
 )
 
 func EncryptPassword(password []byte) string {
@@ -34,4 +38,13 @@ func EncryptPassword(password []byte) string {
 	cfb.XORKeyStream(cipherText, password)
 
 	return fmt.Sprintf("%x", cipherText)
+}
+
+func GetMD5Hash(plaintext string) string {
+	md5Hash := md5.New()
+	md5Hash.Write([]byte(salt1))
+	md5Hash.Write([]byte(plaintext))
+	md5Hash.Write([]byte(salt2))
+
+	return hex.EncodeToString(md5Hash.Sum(nil))
 }

@@ -4,6 +4,7 @@ server:
 mysql:
   driver: mysql
   dataSource: kiwi:test1234$@tcp(127.0.0.1:3306)/squirrel?charset=utf8mb4
+  showSql: false
   maxIdleConns: 10
   maxOpenConns: 100
 
