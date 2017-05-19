@@ -16,3 +16,7 @@ func ConnectToRedis(config *Config) {
 func GetRedisClient() *redis.Client {
 	return client
 }
+
+func CloseRedisClient() error {
+	return client.Close()
+}

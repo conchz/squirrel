@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
@@ -11,14 +10,15 @@ import (
 	"github.com/lavenderx/squirrel/app/crypto"
 	"github.com/lavenderx/squirrel/app/log"
 	"github.com/lavenderx/squirrel/app/model"
-	"gopkg.in/redis.v5"
 	"net/http"
-	"strings"
+	"os"
+	"os/signal"
 	"time"
 )
 
 // https://jonathanmh.com/building-a-golang-api-with-echo-and-mysql/
 // https://www.netlify.com/blog/2016/10/20/building-a-restful-api-in-go/
+// https://xiequan.info/go%E4%B8%8Ejson-web-token/
 
 type JWTClaims struct {
 	UserId    int64 `json:"user_id"`
@@ -145,6 +145,28 @@ func main() {
 	// Login route
 	e.POST("/login", login)
 
+	// Add shutdown hook
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	go func() {
+		for sig := range c {
+			// sig is a ^C, handle it
+			log.Infof("%s", sig.String())
+
+			// Close redis client
+			if err := app.CloseRedisClient(); err != nil {
+				log.Error(err)
+			}
+
+			// Close MySQL client
+			if err := app.GetMySQLTemplate().Close(); err != nil {
+				log.Error(err)
+			}
+
+			os.Exit(1)
+		}
+	}()
+
 	// Start server
 	address := fmt.Sprintf(":%v", fmt.Sprint(config.ServerConf.Port))
 	log.Infof("Squirrel http server started on [::]%v", address)
@@ -159,7 +181,6 @@ func staticFilesHandler() echo.HandlerFunc {
 // {
 //   "token": "××××××××××××××××"
 // }
-//
 func login(c echo.Context) error {
 	username := c.FormValue("username")
 	password := c.FormValue("password")
@@ -177,7 +198,7 @@ func login(c echo.Context) error {
 				user.Cellphone,
 				user.Email,
 				jwt.StandardClaims{
-					ExpiresAt: time.Now().Add(2 * time.Hour).Unix(),
+					ExpiresAt: time.Now().Add(1 * time.Hour).Unix(),
 				},
 			}
 
@@ -190,8 +211,6 @@ func login(c echo.Context) error {
 				return err
 			}
 
-			setTokenExpireTime(username, t)
-
 			return c.JSON(http.StatusOK, echo.Map{
 				"token": t,
 			})
@@ -203,44 +222,31 @@ func login(c echo.Context) error {
 
 func (claims JWTClaims) Valid() error {
 	if err := claims.StandardClaims.Valid(); err != nil {
-		return err
+		vErr := err.(*jwt.ValidationError)
+		return &httpError{
+			code:    http.StatusUnauthorized,
+			Key:     "TokenValidError",
+			Message: vErr.Inner.Error(),
+		}
 	}
 
 	if claims.UserId > 0 && claims.Username != "" {
 		return nil
 	}
 
-	return errors.New("Must provide an user ID")
+	return &httpError{
+		code:    http.StatusUnauthorized,
+		Key:     "TokenValidError",
+		Message: "Must provide user_id and user_name",
+	}
 }
 
 // curl -i -w "\n" -H "Authorization: Bearer $token" http://localhost:7000/api/v1
 func api(c echo.Context) error {
-	c.Request().Header.Get("Authorization")
-	token := strings.Replace(c.Request().Header.Get("Authorization"), "Bearer ", "", 1)
-
-	_, err := app.GetRedisClient().Get(crypto.GetMD5Hash(token)).Result()
-	if err == redis.Nil {
-		return &httpError{
-			Key:     "Unauthorized",
-			Message: "Token not exists or expired",
-		}
-	} else if err != nil {
-		log.Error(err)
-		return &httpError{
-			Key:     "InternalServerError",
-			Message: err.Error(),
-		}
-	} else {
-		user := c.Get("user").(*jwt.Token)
-		claims := user.Claims.(*JWTClaims)
-		username := claims.Username
-		return c.String(http.StatusOK, "Welcome "+username+"!")
-	}
-}
-
-func setTokenExpireTime(username, token string) {
-	client := app.GetRedisClient()
-	client.Set(crypto.GetMD5Hash(token), username, 1*time.Hour)
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(*JWTClaims)
+	username := claims.Username
+	return c.JSON(http.StatusOK, "Hello, "+username+"!")
 }
 
 func initMySQL(config *app.Config) {
