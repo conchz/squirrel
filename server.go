@@ -151,18 +151,21 @@ func main() {
 	go func() {
 		for sig := range c {
 			// sig is a ^C, handle it
-			log.Infof("%s", sig.String())
+			log.Infof("Server will be closed, which is triggered by %s.", sig.String())
 
 			// Close redis client
+			log.Info("Closing Redis client")
 			if err := app.CloseRedisClient(); err != nil {
 				log.Error(err)
 			}
 
 			// Close MySQL client
+			log.Info("Closing MySQL client")
 			if err := app.GetMySQLTemplate().Close(); err != nil {
 				log.Error(err)
 			}
 
+			log.Info("Server closed")
 			os.Exit(1)
 		}
 	}()
