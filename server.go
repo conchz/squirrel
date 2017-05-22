@@ -10,6 +10,7 @@ import (
 	"github.com/lavenderx/squirrel/app/crypto"
 	"github.com/lavenderx/squirrel/app/log"
 	"github.com/lavenderx/squirrel/app/model"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
@@ -151,7 +152,7 @@ func main() {
 	go func() {
 		for sig := range c {
 			// sig is a ^C, handle it
-			log.Infof("Server will be closed, which is triggered by %s.", sig.String())
+			log.Infof("Server will be closed, which is triggered by %s", sig.String())
 
 			// Close redis client
 			log.Info("Closing Redis client")
@@ -165,13 +166,13 @@ func main() {
 				log.Error(err)
 			}
 
-			log.Info("Server closed")
+			log.Infof("Server closed on %s", getLocalIP())
 			os.Exit(1)
 		}
 	}()
 
 	// Start server
-	address := fmt.Sprintf(":%v", fmt.Sprint(config.ServerConf.Port))
+	address := fmt.Sprintf(":%v", config.ServerConf.Port)
 	log.Infof("Squirrel http server started on [::]%v", address)
 	e.Logger.Fatal(e.Start(address))
 }
@@ -263,4 +264,29 @@ func initMySQL(config *app.Config) {
 
 func initRedis(config *app.Config) {
 	app.ConnectToRedis(config)
+}
+
+func getLocalIP() string {
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		log.Errorf("Oops: %s", err.Error())
+		return ""
+	}
+
+	var ipv4Addrs = []string{}
+
+	for _, a := range addrs {
+		if ipNet, ok := a.(*net.IPNet); ok && !ipNet.IP.IsLoopback() {
+			if ipNet.IP.To4() != nil {
+				//os.Stdout.WriteString(ipNet.IP.String() + "\n")
+				ipv4Addrs = append(ipv4Addrs, ipNet.IP.String())
+			}
+		}
+	}
+
+	if len(ipv4Addrs) == 0 {
+		return ""
+	}
+
+	return ipv4Addrs[0]
 }
