@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"runtime"
 	"time"
 )
 
@@ -108,12 +109,48 @@ func init() {
 	initRedis(config)
 }
 
+func recoverWithConfig(config middleware.RecoverConfig) echo.MiddlewareFunc {
+	if config.Skipper == nil {
+		config.Skipper = middleware.DefaultRecoverConfig.Skipper
+	}
+	if config.StackSize == 0 {
+		config.StackSize = middleware.DefaultRecoverConfig.StackSize
+	}
+
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			if config.Skipper(c) {
+				return next(c)
+			}
+
+			defer func() {
+				if r := recover(); r != nil {
+					var err error
+					switch r := r.(type) {
+					case error:
+						err = r
+					default:
+						err = fmt.Errorf("%v", r)
+					}
+					stack := make([]byte, config.StackSize)
+					length := runtime.Stack(stack, !config.DisableStackAll)
+					if !config.DisablePrintStack {
+						log.Errorf("[%s] %s %s\n", "PANIC RECOVER", err, stack[:length])
+					}
+					c.Error(err)
+				}
+			}()
+			return next(c)
+		}
+	}
+}
+
 func main() {
 	e := echo.New()
 	e.HTTPErrorHandler = httpErrorHandler
 	e.Logger.SetLevel(echo_log.OFF)
 
-	e.Use(middleware.Recover())
+	e.Use(recoverWithConfig(middleware.DefaultRecoverConfig))
 	e.Use(middleware.Secure())
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
