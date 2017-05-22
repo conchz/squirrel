@@ -227,22 +227,16 @@ func login(c echo.Context) error {
 func (claims JWTClaims) Valid() error {
 	if err := claims.StandardClaims.Valid(); err != nil {
 		vErr := err.(*jwt.ValidationError)
-		return &httpError{
-			code:    http.StatusUnauthorized,
-			Key:     "TokenValidError",
-			Message: vErr.Inner.Error(),
-		}
+		return newHTTPError(http.StatusUnauthorized, "TokenValidError", vErr.Inner.Error())
 	}
 
 	if claims.UserId > 0 && claims.Username != "" {
 		return nil
 	}
 
-	return &httpError{
-		code:    http.StatusUnauthorized,
-		Key:     "TokenValidError",
-		Message: "Must provide user_id and user_name",
-	}
+	return newHTTPError(http.StatusUnauthorized,
+		"TokenValidError",
+		"Must provide user_id and user_name")
 }
 
 // curl -i -w "\n" -H "Authorization: Bearer $token" http://localhost:7000/api/v1
