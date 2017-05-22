@@ -3,13 +3,9 @@ package log
 import (
 	"errors"
 	"fmt"
-	"github.com/lavenderx/squirrel/app"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"gopkg.in/yaml.v2"
 	"sort"
-	"strings"
-	"sync"
 	"time"
 )
 
@@ -20,43 +16,16 @@ type ZapLogConfig struct {
 	ErrorDispatcherPaths []string `json:"errorDispatcherPaths" yaml:"errorDispatcherPaths"`
 }
 
-var (
-	stat                      uint8 = 0
-	isDebug                         = false
-	logger                          = new(zap.SugaredLogger)
-	lock                            = new(sync.RWMutex)
-	errNoEncoderNameSpecified       = errors.New("no encoder name specified")
-)
+var errNoEncoderNameSpecified = errors.New("no encoder name specified")
 
-func IsDebug() bool {
-	return isDebug
-}
-
-func Logger() *zap.SugaredLogger {
-	return logger
-}
-
-func Init() {
-	if stat == 1 {
-		return
-	}
-
-	lock.RLock()
-	defer lock.RUnlock()
-
-	var zapLogConfig ZapLogConfig
-	if err := yaml.Unmarshal(app.GetLogConfBytes(), &zapLogConfig); err != nil {
-		panic(err)
-	}
-
+func New(config ZapLogConfig) (l *zap.SugaredLogger) {
 	var err error
-	logger, err = zapLogConfig.Build()
+	l, err = config.Build()
 	if err != nil {
 		panic(err)
 	}
 
-	isDebug = strings.ToUpper(zapLogConfig.Level.Level().String()) == zapcore.DebugLevel.CapitalString()
-	stat = 1
+	return
 }
 
 func (c *ZapLogConfig) Build(options ...zap.Option) (*zap.SugaredLogger, error) {
@@ -73,14 +42,14 @@ func (c *ZapLogConfig) Build(options ...zap.Option) (*zap.SugaredLogger, error) 
 	baseCore := zapcore.NewCore(enc, sink, c.Level)
 	errCore := zapcore.NewCore(enc, errDispSink, c.Level)
 	errorDispatcher := NewErrorDispatcher(baseCore, errCore)
-	log := zap.New(
+	l := zap.New(
 		errorDispatcher,
 		c.buildOptions(errSink)...,
 	)
 	if len(options) > 0 {
-		log = log.WithOptions(options...)
+		l = l.WithOptions(options...)
 	}
-	return log.Sugar(), nil
+	return l.Sugar(), nil
 }
 
 func (c *ZapLogConfig) buildEncoder() (encoder zapcore.Encoder, err error) {

@@ -11,16 +11,20 @@ import (
 	"github.com/lavenderx/squirrel/app/log"
 	"github.com/lavenderx/squirrel/app/model"
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+	"gopkg.in/yaml.v2"
 	"net"
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"time"
 )
 
 // https://jonathanmh.com/building-a-golang-api-with-echo-and-mysql/
 // https://www.netlify.com/blog/2016/10/20/building-a-restful-api-in-go/
 // https://xiequan.info/go%E4%B8%8Ejson-web-token/
+// https://zhuanlan.zhihu.com/p/26300634
 
 type (
 	JWTClaims struct {
@@ -31,7 +35,6 @@ type (
 		jwt.StandardClaims
 	}
 
-	// reference: https://zhuanlan.zhihu.com/p/26300634
 	httpError struct {
 		code    int
 		Key     string `json:"error"`
@@ -68,7 +71,7 @@ func httpErrorHandler(err error, c echo.Context) {
 		code = ehe.Code
 		key = http.StatusText(code)
 		msg = key
-	} else if log.IsDebug() {
+	} else if isDebug {
 		msg = err.Error()
 	} else {
 		msg = http.StatusText(code)
@@ -90,10 +93,11 @@ func httpErrorHandler(err error, c echo.Context) {
 }
 
 var (
+	isDebug       bool
 	assetsHandler http.Handler
 	config        *app.Config
-	logger        *zap.SugaredLogger
 	mySQLTemplate *app.MySQLTemplate
+	logger        *zap.SugaredLogger
 )
 
 func init() {
@@ -105,10 +109,14 @@ func init() {
 	assetsHandler = http.FileServer(assets.HTTPBox())
 
 	// Initialize log component
-	log.Init()
-	logger = log.Logger()
+	var zapLogConfig log.ZapLogConfig
+	if err := yaml.Unmarshal(app.GetLogConfBytes(), &zapLogConfig); err != nil {
+		panic(err)
+	}
+	logger = log.New(zapLogConfig)
+	isDebug = strings.ToUpper(zapLogConfig.Level.Level().String()) == zapcore.DebugLevel.CapitalString()
 
-	// Init MySQL & Redis client
+	// Initialize MySQL & Redis client
 	initMySQL(config)
 	initRedis(config)
 }
@@ -163,7 +171,7 @@ func main() {
 	go func() {
 		for sig := range c {
 			// sig is a ^C, handle it
-			log.Logger().Info("Server will be closed, which is triggered by %s", sig.String())
+			logger.Infof("Server will be closed, which is triggered by %s", sig.String())
 
 			// Close redis client
 			logger.Info("Closing Redis client")
@@ -184,7 +192,7 @@ func main() {
 
 	// Start server
 	address := fmt.Sprintf(":%v", config.ServerConf.Port)
-	logger.Infof("Squirrel http server started on [::]%v", address)
+	logger.Infof("Server started on [::]%v", address)
 	e.Logger.Fatal(e.Start(address))
 }
 
