@@ -10,11 +10,11 @@ import (
 	"github.com/lavenderx/squirrel/app/crypto"
 	"github.com/lavenderx/squirrel/app/log"
 	"github.com/lavenderx/squirrel/app/model"
+	"go.uber.org/zap"
 	"net"
 	"net/http"
 	"os"
 	"os/signal"
-	"runtime"
 	"time"
 )
 
@@ -22,20 +22,22 @@ import (
 // https://www.netlify.com/blog/2016/10/20/building-a-restful-api-in-go/
 // https://xiequan.info/go%E4%B8%8Ejson-web-token/
 
-type JWTClaims struct {
-	UserId    int64 `json:"user_id"`
-	Username  string `json:"user_name"`
-	Cellphone string `json:"cellphone"`
-	Email     string `json:"email"`
-	jwt.StandardClaims
-}
+type (
+	JWTClaims struct {
+		UserId    int64 `json:"user_id"`
+		Username  string `json:"user_name"`
+		Cellphone string `json:"cellphone"`
+		Email     string `json:"email"`
+		jwt.StandardClaims
+	}
 
-// reference: https://zhuanlan.zhihu.com/p/26300634
-type httpError struct {
-	code    int
-	Key     string `json:"error"`
-	Message string `json:"message"`
-}
+	// reference: https://zhuanlan.zhihu.com/p/26300634
+	httpError struct {
+		code    int
+		Key     string `json:"error"`
+		Message string `json:"message"`
+	}
+)
 
 func newHTTPError(code int, key string, msg string) *httpError {
 	return &httpError{
@@ -76,12 +78,12 @@ func httpErrorHandler(err error, c echo.Context) {
 		if c.Request().Method == echo.HEAD {
 			err := c.NoContent(code)
 			if err != nil {
-				log.Error(err)
+				logger.Error(err)
 			}
 		} else {
 			err := c.JSON(code, newHTTPError(code, key, msg))
 			if err != nil {
-				log.Error(err)
+				logger.Error(err)
 			}
 		}
 	}
@@ -90,6 +92,7 @@ func httpErrorHandler(err error, c echo.Context) {
 var (
 	assetsHandler http.Handler
 	config        *app.Config
+	logger        *zap.SugaredLogger
 	mySQLTemplate *app.MySQLTemplate
 )
 
@@ -103,46 +106,11 @@ func init() {
 
 	// Initialize log component
 	log.Init()
+	logger = log.Logger()
 
 	// Init MySQL & Redis client
 	initMySQL(config)
 	initRedis(config)
-}
-
-func recoverWithConfig(config middleware.RecoverConfig) echo.MiddlewareFunc {
-	if config.Skipper == nil {
-		config.Skipper = middleware.DefaultRecoverConfig.Skipper
-	}
-	if config.StackSize == 0 {
-		config.StackSize = middleware.DefaultRecoverConfig.StackSize
-	}
-
-	return func(next echo.HandlerFunc) echo.HandlerFunc {
-		return func(c echo.Context) error {
-			if config.Skipper(c) {
-				return next(c)
-			}
-
-			defer func() {
-				if r := recover(); r != nil {
-					var err error
-					switch r := r.(type) {
-					case error:
-						err = r
-					default:
-						err = fmt.Errorf("%v", r)
-					}
-					stack := make([]byte, config.StackSize)
-					length := runtime.Stack(stack, !config.DisableStackAll)
-					if !config.DisablePrintStack {
-						log.Errorf("[%s] %s %s\n", "PANIC RECOVER", err, stack[:length])
-					}
-					c.Error(err)
-				}
-			}()
-			return next(c)
-		}
-	}
 }
 
 func main() {
@@ -150,7 +118,13 @@ func main() {
 	e.HTTPErrorHandler = httpErrorHandler
 	e.Logger.SetLevel(echo_log.OFF)
 
-	e.Use(recoverWithConfig(middleware.DefaultRecoverConfig))
+	e.Use(func(h echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			c.Set("logger", logger)
+			return h(c)
+		}
+	})
+	e.Use(app.RecoverWithConfig(middleware.DefaultRecoverConfig))
 	e.Use(middleware.Secure())
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -189,28 +163,28 @@ func main() {
 	go func() {
 		for sig := range c {
 			// sig is a ^C, handle it
-			log.Infof("Server will be closed, which is triggered by %s", sig.String())
+			log.Logger().Info("Server will be closed, which is triggered by %s", sig.String())
 
 			// Close redis client
-			log.Info("Closing Redis client")
+			logger.Info("Closing Redis client")
 			if err := app.CloseRedisClient(); err != nil {
-				log.Error(err)
+				logger.Error(err)
 			}
 
 			// Close MySQL client
-			log.Info("Closing MySQL client")
+			logger.Info("Closing MySQL client")
 			if err := app.GetMySQLTemplate().Close(); err != nil {
-				log.Error(err)
+				logger.Error(err)
 			}
 
-			log.Infof("Server closed on %s", getLocalIP())
+			logger.Infof("Server closed on %s", getLocalIP())
 			os.Exit(1)
 		}
 	}()
 
 	// Start server
 	address := fmt.Sprintf(":%v", config.ServerConf.Port)
-	log.Infof("Squirrel http server started on [::]%v", address)
+	logger.Infof("Squirrel http server started on [::]%v", address)
 	e.Logger.Fatal(e.Start(address))
 }
 
@@ -300,7 +274,7 @@ func initRedis(config *app.Config) {
 func getLocalIP() string {
 	addrs, err := net.InterfaceAddrs()
 	if err != nil {
-		log.Errorf("Oops: %s", err.Error())
+		logger.Errorf("Oops: %s", err.Error())
 		return ""
 	}
 
