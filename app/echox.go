@@ -8,18 +8,7 @@ import (
 	"runtime"
 )
 
-// Extend echo's middleware
-
-type (
-	CustomContext struct {
-		echo.Context
-		logger *zap.SugaredLogger
-	}
-)
-
-func (c *CustomContext) Logger() *zap.SugaredLogger {
-	return c.logger
-}
+// Extend echo's middleware: https://echo.labstack.com/cookbook/middleware
 
 // Customize echo's RecoverWithConfig to use zap log
 func RecoverWithConfig(config middleware.RecoverConfig) echo.MiddlewareFunc {
@@ -50,9 +39,11 @@ func RecoverWithConfig(config middleware.RecoverConfig) echo.MiddlewareFunc {
 					if !config.DisablePrintStack {
 						c.Get("logger").(*zap.SugaredLogger).Errorf("[%s] %s %s\n", "PANIC RECOVER", err, stack[:length])
 					}
+
 					c.Error(err)
 				}
 			}()
+
 			return next(c)
 		}
 	}

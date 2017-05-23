@@ -5,7 +5,6 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	echo_log "github.com/labstack/gommon/log"
 	"github.com/lavenderx/squirrel/app"
 	"github.com/lavenderx/squirrel/app/crypto"
 	"github.com/lavenderx/squirrel/app/log"
@@ -13,6 +12,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/yaml.v2"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"os"
@@ -124,7 +124,7 @@ func init() {
 func main() {
 	e := echo.New()
 	e.HTTPErrorHandler = httpErrorHandler
-	e.Logger.SetLevel(echo_log.OFF)
+	e.Logger.SetOutput(ioutil.Discard)
 
 	e.Use(func(h echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
