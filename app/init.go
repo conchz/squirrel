@@ -3,7 +3,7 @@ package app
 import (
 	"github.com/labstack/echo"
 	"github.com/lavenderx/squirrel/app/log"
-	"github.com/lavenderx/squirrel/app/model"
+	"github.com/lavenderx/squirrel/app/models"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/yaml.v2"
 	"net/http"
@@ -45,7 +45,7 @@ func initMySQL() {
 	ConnectToMySQL(config)
 
 	mySQLTemplate = GetMySQLTemplate()
-	if err := mySQLTemplate.XormEngine().Sync2(new(model.User)); err != nil {
+	if err := mySQLTemplate.XormEngine().Sync2(new(models.User)); err != nil {
 		panic(err)
 	}
 }

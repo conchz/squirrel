@@ -6,7 +6,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/lavenderx/squirrel/app/crypto"
-	"github.com/lavenderx/squirrel/app/model"
+	"github.com/lavenderx/squirrel/app/models"
 	"go.uber.org/zap"
 	"io/ioutil"
 	"net"
@@ -303,11 +303,11 @@ func login(c echo.Context) error {
 	password := c.FormValue("password")
 	encryptedPasswd := crypto.EncryptPassword([]byte(password))
 
-	if u := mySQLTemplate.GetByNonEmptyFields(&model.User{
+	if u := mySQLTemplate.GetByNonEmptyFields(&models.User{
 		Username: username,
 		Password: encryptedPasswd,
 	}); u != nil {
-		user := u.(*model.User)
+		user := u.(*models.User)
 		if username == user.Username && encryptedPasswd == user.Password {
 			claims := &JWTClaims{
 				user.Id,

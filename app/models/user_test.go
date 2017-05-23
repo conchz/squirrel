@@ -1,9 +1,9 @@
-package model_test
+package models_test
 
 import (
 	"github.com/lavenderx/squirrel/app"
 	"github.com/lavenderx/squirrel/app/crypto"
-	"github.com/lavenderx/squirrel/app/model"
+	"github.com/lavenderx/squirrel/app/models"
 	"testing"
 	"time"
 )
@@ -14,13 +14,13 @@ func init() {
 	app.ConnectToMySQL(app.LoadConfig())
 
 	mySQLTemplate = app.GetMySQLTemplate()
-	if err := mySQLTemplate.XormEngine().Sync2(new(model.User)); err != nil {
+	if err := mySQLTemplate.XormEngine().Sync2(new(models.User)); err != nil {
 		panic(err)
 	}
 }
 
 func TestUser_Insert(t *testing.T) {
-	user := &model.User{
+	user := &models.User{
 		Username:    "test",
 		Password:    crypto.EncryptPassword([]byte("testSecret")),
 		Cellphone:   "156××××××××",
@@ -36,6 +36,6 @@ func TestUser_Insert(t *testing.T) {
 }
 
 func TestUser_FindById(t *testing.T) {
-	user := mySQLTemplate.GetById(1, new(model.User))
+	user := mySQLTemplate.GetById(1, new(models.User))
 	t.Logf("User: %+v\n", user)
 }

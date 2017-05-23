@@ -1,7 +1,8 @@
-package alidayu
+package alidayu_test
 
 import (
 	"fmt"
+	"github.com/lavenderx/squirrel/app/alidayu"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -10,7 +11,7 @@ import (
 // Example of Client.Post()
 func TestClient_Post(t *testing.T) {
 	// Create a new client(创建一个新的Client实例).
-	c := &Client{AppKey: "", AppSecret: "", UseHTTPS: false}
+	c := &alidayu.Client{AppKey: "", AppSecret: "", UseHTTPS: false}
 
 	// ---------------------------------------
 	// Send Verification Code in SMS(发送短信验证码).
@@ -88,7 +89,7 @@ func TestClient_Post(t *testing.T) {
 // Example of Client.Exec()
 func TestClient_Exec(t *testing.T) {
 	// Create a new client(创建一个新的Client实例).
-	c := &Client{AppKey: "", AppSecret: "", UseHTTPS: false}
+	c := &alidayu.Client{AppKey: "", AppSecret: "", UseHTTPS: false}
 
 	// ---------------------------------------
 	// Send Verification Code in SMS(发送短信验证码).

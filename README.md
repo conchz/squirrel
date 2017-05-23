@@ -4,13 +4,6 @@
 
 A modern [*Golang*](https://golang.org/) web application scaffold, [*Echo*](https://echo.labstack.com/) for building RESTful API and [*Vue.js*](https://vuejs.org/) for the view.
 
-## Quick Start
-
-#### Starting Server
-![Starting Server](docs/images/idea_squirrel_server_startup.png)
-
-#### Starting UI
-![Starting UI](docs/images/idea_squirrel_ui_startup.png)
 
 ## Deploying to Docker
 
