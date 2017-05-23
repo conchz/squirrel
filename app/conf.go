@@ -5,11 +5,9 @@ import (
 	"sync"
 )
 
-var lock sync.RWMutex
-
 type Config struct {
 	ServerConf struct {
-		Port uint16 `yaml:"port"`
+		Port int `yaml:"port"`
 	} `yaml:"server"`
 	MySQLConf struct {
 		Driver       string `yaml:"driver"`
@@ -25,7 +23,10 @@ type Config struct {
 }
 
 // http://stackoverflow.com/questions/20240179/nil-detection-in-go
-var config *Config
+var (
+	config *Config
+	lock   sync.RWMutex
+)
 
 func LoadConfig() *Config {
 	if config != nil {
@@ -39,6 +40,9 @@ func LoadConfig() *Config {
 	if err := yaml.Unmarshal(bytes, &config); err != nil {
 		panic(err)
 	}
+
+	// Setup server port
+	port = config.ServerConf.Port
 
 	return config
 }
