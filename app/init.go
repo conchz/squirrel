@@ -14,8 +14,8 @@ func init() {
 	_ = LoadConfig()
 
 	// Setup app startup hooks
-	OnAppStart(loadAssets)
-	OnAppStart(initLog)
+	OnAppStart(loadAssets, -1)
+	OnAppStart(initLog, 0)
 	OnAppStart(initMySQL)
 	OnAppStart(initRedis)
 
