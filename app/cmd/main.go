@@ -94,6 +94,7 @@ func httpErrorHandler(err error, c echo.Context) {
 
 var (
 	isDebug       bool
+	port          uint16
 	assetsHandler http.Handler
 	config        *app.Config
 	mySQLTemplate *app.MySQLTemplate
@@ -103,6 +104,7 @@ var (
 func init() {
 	// Load application config
 	config = app.LoadConfig()
+	port = config.ServerConf.Port
 
 	// Load assets and set assetsHandler
 	assets := app.Assets()
@@ -191,7 +193,7 @@ func main() {
 	}()
 
 	// Start server
-	address := fmt.Sprintf(":%v", config.ServerConf.Port)
+	address := fmt.Sprintf(":%v", port)
 	logger.Infof("Server started on [::]%v", address)
 	e.Logger.Fatal(e.Start(address))
 }
