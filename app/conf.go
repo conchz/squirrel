@@ -14,9 +14,9 @@ type Config struct {
 	MySQLConf struct {
 		Driver       string `yaml:"driver"`
 		DataSource   string `yaml:"dataSource"`
-		ShowSQL      bool `yaml:"showSql"`
-		MaxIdleConns int `yaml:"maxIdleConns"`
-		MaxOpenConns int `yaml:"maxOpenConns"`
+		ShowSQL      bool   `yaml:"showSql"`
+		MaxIdleConns int    `yaml:"maxIdleConns"`
+		MaxOpenConns int    `yaml:"maxOpenConns"`
 	} `yaml:"mysql"`
 	RedisConf struct {
 		Address  string `yaml:"address"`
