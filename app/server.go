@@ -4,7 +4,7 @@ import (
 	"sort"
 )
 
-func runStartupHooks() {
+func RunStartupHooks() {
 	sort.Sort(startupHooks)
 	for _, hook := range startupHooks {
 		hook.f()

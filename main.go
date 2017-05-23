@@ -124,6 +124,8 @@ func init() {
 }
 
 func main() {
+	app.RunStartupHooks()
+
 	e := echo.New()
 	e.HTTPErrorHandler = httpErrorHandler
 	e.Logger.SetOutput(ioutil.Discard)
