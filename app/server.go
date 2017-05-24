@@ -129,10 +129,9 @@ func Run() {
 	}()
 
 	// Start server
-	address := fmt.Sprintf(":%v", port)
-	logger.Infof("Server started on [::]%v", address)
-	e.Logger.Fatal(e.StartServer(&http.Server{
-		Addr:         address,
+	logger.Info("Server initialization finished")
+	logger.Fatal(e.StartServer(&http.Server{
+		Addr:         fmt.Sprintf(":%v", port),
 		ReadTimeout:  1 * time.Minute,
 		WriteTimeout: 1 * time.Minute,
 	}))
