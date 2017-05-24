@@ -32,4 +32,4 @@ else
     docker rm ${containerName}
 fi
 
-docker run --name ${containerName} --net host -it --rm lavenderx/squirrel
+docker run --name ${containerName} --net host -d lavenderx/squirrel
