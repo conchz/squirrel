@@ -55,9 +55,6 @@ func LoadConfig() *Config {
 		panic(err)
 	}
 
-	// Setup server port
-	port = config.ServerConf.Port
-
 	return config
 }
 

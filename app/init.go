@@ -14,11 +14,14 @@ func init() {
 	// Setup app startup hooks
 	OnAppStart(func() {
 		// Load config at first
-		_ = LoadConfig()
+		config := LoadConfig()
 
 		// Load assets and set assetsHandler
 		assetsHandler := http.FileServer(Assets().HTTPBox())
 		staticFilesHandler = echo.WrapHandler(assetsHandler)
+
+		// Setup server port
+		port = config.ServerConf.Port
 	}, -1)
 	OnAppStart(initLog, 0)
 	OnAppStart(initMySQL)
