@@ -8,6 +8,7 @@ type User struct {
 	Id          int64
 	Username    string    `xorm:"varchar(20) not null unique"`
 	Password    string    `xorm:"varchar(20) not null"`
+	Secret      string    `xorm:"char(32) not null"`
 	Cellphone   string    `xorm:"varchar(20) not null unique"`
 	Email       string    `xorm:"varchar(20)"`
 	CreatedTime time.Time `xorm:"not null 'created_time'"`

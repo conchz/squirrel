@@ -111,6 +111,10 @@ func (t *MySQLTemplate) Insert(bean interface{}) (int64, error) {
 
 // Retrieve one record from database by id
 // bean: a point of struct
+//
+// Example:
+//      GetById(1, new(models.User))
+//
 func (t *MySQLTemplate) GetById(id int64, bean interface{}) interface{} {
 	exists, err := t.engine.Id(id).Get(bean)
 	if err != nil || !exists {
@@ -127,6 +131,11 @@ func (t *MySQLTemplate) GetByNonEmptyFields(bean interface{}) interface{} {
 		return nil
 	}
 	return bean
+}
+
+// Delete records from database, bean's non-empty fields will be as conditions
+func (t *MySQLTemplate) DeleteByNonEmptyFields(bean interface{}) (int64, error) {
+	return t.engine.Delete(bean)
 }
 
 func (t *MySQLTemplate) Close() error {
