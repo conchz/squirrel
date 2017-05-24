@@ -11,10 +11,15 @@ import (
 )
 
 func init() {
-	_ = LoadConfig()
-
 	// Setup app startup hooks
-	OnAppStart(loadAssets, -1)
+	OnAppStart(func() {
+		// Load config at first
+		_ = LoadConfig()
+
+		// Load assets and set assetsHandler
+		assetsHandler := http.FileServer(Assets().HTTPBox())
+		staticFilesHandler = echo.WrapHandler(assetsHandler)
+	}, -1)
 	OnAppStart(initLog, 0)
 	OnAppStart(initMySQL)
 	OnAppStart(initRedis)
@@ -22,12 +27,6 @@ func init() {
 	// Setup app shutdown hooks
 	OnAppStop(shutdownMySQL)
 	OnAppStop(shutdownRedis)
-}
-
-// Load assets and set assetsHandler
-func loadAssets() {
-	assetsHandler := http.FileServer(Assets().HTTPBox())
-	staticFilesHandler = echo.WrapHandler(assetsHandler)
 }
 
 // Initialize log component
