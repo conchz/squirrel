@@ -22,7 +22,7 @@ containerName=squirrel-demo
 isRunning=$(docker inspect --format="{{ .State.Running }}" ${containerName} 2> /dev/null)
 
 if [ $? -eq 1 ];  then
-    printf "No squirrel container is running!\n"
+    printf "No ${containerName} is running\n"
 else
     # Checking container running status
     if [ "${isRunning}" = "true" ];  then
