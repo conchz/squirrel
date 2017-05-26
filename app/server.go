@@ -1,6 +1,7 @@
 package app
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
@@ -123,7 +124,7 @@ func Run() {
 
 			runShutdownHooks()
 
-			logger.Infof("Server closed on %s", getLocalIP())
+			logger.Infof("Server closed on %s", getPrivateIP())
 			os.Exit(1)
 		}
 	}()
@@ -359,7 +360,30 @@ func api(c echo.Context) error {
 	return c.JSON(http.StatusOK, "Hello, "+username+"!")
 }
 
-func getLocalIP() string {
+var (
+	ipA1 = net.ParseIP("10.0.0.0")
+	ipA2 = net.ParseIP("10.255.255.255")
+	ipB1 = net.ParseIP("172.16.0.0")
+	ipB2 = net.ParseIP("172.31.255.255")
+	ipC1 = net.ParseIP("192.168.0.0")
+	ipC2 = net.ParseIP("192.168.255.255")
+)
+
+func isPrivateIP(ip net.IP) bool {
+	if ip.To4() == nil {
+		return false
+	}
+
+	if (bytes.Compare(ip, ipA1) >= 0 && bytes.Compare(ip, ipA2) <= 0) ||
+		(bytes.Compare(ip, ipB1) >= 0 && bytes.Compare(ip, ipB2) <= 0) ||
+		(bytes.Compare(ip, ipC1) >= 0 && bytes.Compare(ip, ipC2) <= 0) {
+		return true
+	}
+
+	return false
+}
+
+func getPrivateIP() string {
 	addrs, err := net.InterfaceAddrs()
 	if err != nil {
 		logger.Errorf("Oops: %s", err.Error())
@@ -370,7 +394,7 @@ func getLocalIP() string {
 
 	for _, a := range addrs {
 		if ipNet, ok := a.(*net.IPNet); ok && !ipNet.IP.IsLoopback() {
-			if ipNet.IP.To4() != nil {
+			if isPrivateIP(ipNet.IP) {
 				//os.Stdout.WriteString(ipNet.IP.String() + "\n")
 				ipv4Addrs = append(ipv4Addrs, ipNet.IP.String())
 			}
