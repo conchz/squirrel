@@ -29,4 +29,3 @@ import:
   version: v3.1.8
   subpackages:
   - clientv3
-- package: github.com/nsqio/go-nsq
