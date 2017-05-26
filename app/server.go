@@ -72,6 +72,7 @@ func Run() {
 	runStartupHooks()
 
 	e := echo.New()
+	e.Debug = isDebug
 	e.HTTPErrorHandler = httpErrorHandler
 	e.Logger.SetOutput(ioutil.Discard)
 
@@ -231,7 +232,7 @@ func httpErrorHandler(err error, c echo.Context) {
 	} else if ehe, ok := err.(*echo.HTTPError); ok {
 		code = ehe.Code
 		key = http.StatusText(code)
-		msg = key
+		msg = fmt.Sprintf("%v", ehe.Message)
 	} else if isDebug {
 		msg = err.Error()
 	} else {
@@ -340,6 +341,8 @@ func login(c echo.Context) error {
 func (claims JWTClaims) Valid() error {
 	if err := claims.StandardClaims.Valid(); err != nil {
 		vErr := err.(*jwt.ValidationError)
+		logger.Warnf("User[%s] JWT validation failed: %s", claims.Username, vErr.Inner.Error())
+
 		return newHTTPError(http.StatusUnauthorized, "TokenValidError", vErr.Inner.Error())
 	}
 
