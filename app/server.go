@@ -294,7 +294,7 @@ func recoverWithConfig(config middleware.RecoverConfig) echo.MiddlewareFunc {
 	}
 }
 
-// curl -i -w "\n" -H "'Content-Type': 'application/json; charset=UTF-8'" -d "username=test&password=testSecret" http://localhost:7000/login
+// curl -i -w "\n" -H "'Content-Type': 'application/json; charset=UTF-8'" -d "username=test&password=passwd" http://localhost:7000/login
 // {
 //   "token": "××××××××××××××××"
 // }
