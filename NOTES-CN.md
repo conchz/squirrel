@@ -36,4 +36,6 @@ Golang Notes
 
 1. [http://colobu.com/categories/Go/](http://colobu.com/categories/Go/)
 
-2. [http://xiaorui.cc/category/golang/](http://xiaorui.cc/category/golang/)
+2. [https://blog.sodroid.com/tags/Go/](https://blog.sodroid.com/tags/Go/)
+
+3. [http://xiaorui.cc/category/golang/](http://xiaorui.cc/category/golang/)
