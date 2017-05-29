@@ -1,8 +1,10 @@
-hash: 14fd95a12592af17f2e6f48c8b43f16a4cc858e097ec4c3b80f2d6fd1ea5789a
-updated: 2017-05-18T13:52:25.473634721+08:00
+hash: d8b520642dbf26538a6dea131af2d2255e74823b540171df4c21e38c4ab769e4
+updated: 2017-05-29T12:06:29.652575852+08:00
 imports:
+- name: github.com/casbin/casbin
+  version: eb9c4296ddc2217a7d4a5d6595f4ec8111ae4aae
 - name: github.com/coreos/etcd
-  version: 43b75072bfaca5a7c35c718179defbcabd9a0886
+  version: d267ca9c184e953554257d0acdd1dc9c47d38229
   subpackages:
   - clientv3
 - name: github.com/daaku/go.zipexe
@@ -25,8 +27,6 @@ imports:
   version: 100ba4e885062801d56799d78530b73b178a78f3
   subpackages:
   - proto
-- name: github.com/json-iterator/go
-  version: abcf2759ed264810fa140330c0d957f4661f5425
 - name: github.com/kardianos/osext
   version: 9d302b58e975387d0b4d9be876622c86cefe64be
 - name: github.com/labstack/echo
@@ -44,10 +44,10 @@ imports:
   version: ded68f7a9561c023e790de24279db7ebf473ea80
 - name: github.com/mattn/go-isatty
   version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
-- name: github.com/nsqio/go-nsq
-  version: b2d0b4429f2082bc44babe089418d8da16d71e8a
 - name: github.com/smallnest/rpcx
   version: 7aaa5bb7f166f1e70b6929bc6d1bfbb9e5e52b39
+- name: github.com/tinylib/msgp
+  version: 1cce05a45012c07001dbfb1679c2f25ac0c189e6
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasthttp

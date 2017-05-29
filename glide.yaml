@@ -10,7 +10,6 @@ import:
   version: v1.3
 - package: github.com/go-xorm/xorm
   version: ^0.6.2
-- package: github.com/json-iterator/go
 - package: github.com/valyala/fasthttp
 - package: gopkg.in/redis.v5
   version: ^5.2.9
@@ -29,3 +28,7 @@ import:
   version: v3.1.8
   subpackages:
   - clientv3
+- package: github.com/casbin/casbin
+  version: ^0.2.0
+- package: github.com/tinylib/msgp
+  version: ^1.0.1
