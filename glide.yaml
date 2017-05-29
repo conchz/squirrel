@@ -32,3 +32,4 @@ import:
   version: ^0.2.0
 - package: github.com/tinylib/msgp
   version: ^1.0.1
+- package: github.com/buger/jsonparser

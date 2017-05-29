@@ -1,6 +1,8 @@
-hash: d8b520642dbf26538a6dea131af2d2255e74823b540171df4c21e38c4ab769e4
-updated: 2017-05-29T12:06:29.652575852+08:00
+hash: 54c2a7151ebb1cd9add22d535ac9e445a83745505c9a4419507a4163b5685b22
+updated: 2017-05-29T20:44:56.6154849+08:00
 imports:
+- name: github.com/buger/jsonparser
+  version: 016ea00d7ed52c8acc470d90b03d2e6c13516814
 - name: github.com/casbin/casbin
   version: eb9c4296ddc2217a7d4a5d6595f4ec8111ae4aae
 - name: github.com/coreos/etcd
