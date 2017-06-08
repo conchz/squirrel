@@ -1,5 +1,5 @@
-hash: de4506b96ebe728fba07f2ce2a1f63899fa2618a7eaffffbebe81ffbe1f88ae7
-updated: 2017-06-08T11:08:25.3639661+08:00
+hash: 8a25b72d4ed0ff5fdb4225520337c2e533f00eb268d8454421145ca5d6fb1f0f
+updated: 2017-06-08T11:36:00.1395652+08:00
 imports:
 - name: github.com/buger/jsonparser
   version: bb14bb6c38f6cf1706ef55278891d184b6a51b0e
@@ -48,14 +48,12 @@ imports:
   version: ded68f7a9561c023e790de24279db7ebf473ea80
 - name: github.com/mattn/go-isatty
   version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
-- name: github.com/smallnest/rpcx
-  version: 7aaa5bb7f166f1e70b6929bc6d1bfbb9e5e52b39
 - name: github.com/tinylib/msgp
   version: 1cce05a45012c07001dbfb1679c2f25ac0c189e6
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasthttp
-  version: ""
+  version: fc109d6887b5edb43510d924d14d735f3975fb51
 - name: github.com/valyala/fasttemplate
   version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
 - name: github.com/willf/bitset

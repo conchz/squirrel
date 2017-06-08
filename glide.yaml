@@ -22,14 +22,12 @@ import:
   version: v0.4
   subpackages:
   - proto
-- package: github.com/smallnest/rpcx
-  version: ^1.3
 - package: github.com/coreos/etcd
   version: v3.1.8
   subpackages:
   - clientv3
 - package: github.com/casbin/casbin
-  version: ^0.2.0
+  version: ^0.3.0
 - package: github.com/tinylib/msgp
   version: ^1.0.1
 - package: github.com/buger/jsonparser
