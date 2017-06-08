@@ -33,3 +33,5 @@ import:
 - package: github.com/tinylib/msgp
   version: ^1.0.1
 - package: github.com/buger/jsonparser
+- package: github.com/go-kit/kit
+  version: ^0.4.0
