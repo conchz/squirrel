@@ -1,14 +1,10 @@
-hash: 8a25b72d4ed0ff5fdb4225520337c2e533f00eb268d8454421145ca5d6fb1f0f
-updated: 2017-06-08T11:36:00.1395652+08:00
+hash: 704919af84abc808ddf9bb529909db9b36a222ef52a8cb76f43997498093abba
+updated: 2017-06-15T16:26:51.6361274+08:00
 imports:
 - name: github.com/buger/jsonparser
   version: bb14bb6c38f6cf1706ef55278891d184b6a51b0e
 - name: github.com/casbin/casbin
-  version: 547cbff057494ca12efeedac12127277d4e95cf6
-- name: github.com/coreos/etcd
-  version: d267ca9c184e953554257d0acdd1dc9c47d38229
-  subpackages:
-  - clientv3
+  version: be8d4127ad3919a23eace6c79cd298ca4c85d9a7
 - name: github.com/daaku/go.zipexe
   version: a5fe2436ffcb3236e175e5149162b41cd28bd27d
 - name: github.com/dgrijalva/jwt-go
@@ -31,6 +27,10 @@ imports:
   version: 100ba4e885062801d56799d78530b73b178a78f3
   subpackages:
   - proto
+- name: github.com/hashicorp/consul
+  version: f4360770d8e7b852e2d05835b583d20799e58133
+  subpackages:
+  - api
 - name: github.com/kardianos/osext
   version: 9d302b58e975387d0b4d9be876622c86cefe64be
 - name: github.com/labstack/echo
@@ -61,7 +61,7 @@ imports:
 - name: go.uber.org/atomic
   version: 4e336646b2ef9fc6e47be8e21594178f98e5ebcf
 - name: go.uber.org/zap
-  version: fab453050a7a08c35f31fc5fff6f2dbd962285ab
+  version: 9cabc84638b70e564c3dab2766efcb1ded2aac9f
   subpackages:
   - buffer
   - internal/bufferpool

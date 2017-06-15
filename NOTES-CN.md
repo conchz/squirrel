@@ -1,7 +1,7 @@
 Golang Notes
 ============
 
-## Referenced Articles
+## Marked Articles
 
 1. [Effective Go](https://go-zh.org/doc/effective_go.html)
 
@@ -27,9 +27,13 @@ Golang Notes
 
 12. [使用 Elastic Stack 来监控和调优 Golang 应用程序](https://my.oschina.net/u/569210/blog/852351)
 
-13. [今日头条Go建千亿级微服务的实践](https://zhuanlan.zhihu.com/p/26695984)
+13. [Golang 通过 Consul 实现分布式锁](https://xiequan.info/golang-%E9%80%9A%E8%BF%87-consul-%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/)
 
-14. [华尔街见闻基于Golang的微服务实践](https://zhuanlan.zhihu.com/p/26777189)
+14. [Go kit 入门](https://toutiao.io/posts/yfwvyt/preview)
+
+15. [今日头条Go建千亿级微服务的实践](https://zhuanlan.zhihu.com/p/26695984)
+
+16. [华尔街见闻基于Golang的微服务实践](https://zhuanlan.zhihu.com/p/26777189)
 
 
 ## Blogs
