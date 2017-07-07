@@ -25,7 +25,6 @@ services:
 before_install:
   # https://docs.travis-ci.com/user/customizing-the-build/#Installing-a-Second-Programming-language
   - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
-  - redis-server /etc/redis/redis.conf --daemonize yes --port 16379 --requirepass '5RdXzAq1'
   - go get -v github.com/GeertJohan/go.rice/rice
   - go get -v github.com/Masterminds/glide
 
@@ -36,6 +35,7 @@ install:
 before_script:
   # Create MySQL database and user
   - mysql -u root -e "USE mysql;CREATE DATABASE IF NOT EXISTS squirrel DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci;CREATE USER 'kiwi'@'localhost' IDENTIFIED BY 'test1234$';GRANT ALL PRIVILEGES ON squirrel.* TO 'kiwi'@'localhost' IDENTIFIED BY 'test1234$';SET GLOBAL TIME_ZONE = '+8:00';SET TIME_ZONE = '+8:00';FLUSH PRIVILEGES;"
+  - sudo redis-server /etc/redis/redis.conf --daemonize yes --port 16379 --requirepass '5RdXzAq1'
 
 script:
   - make test
