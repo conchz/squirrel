@@ -3,6 +3,7 @@ license: MIT
 excludeDirs:
 - ui/node_modules
 import:
+- package: github.com/golang/net
 - package: github.com/willf/bitset
 - package: github.com/labstack/echo
   version: 3.2.1

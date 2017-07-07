@@ -1,5 +1,5 @@
-hash: 447a6eefe0d04e84a487e9e34715606ae8d6612a22dadc34989ed3ada557252f
-updated: 2017-07-07T13:58:58.827285723+08:00
+hash: a15a72f2004dec533f6f0db2e7ac3f4c52ed87d209ca668c2990da182a165633
+updated: 2017-07-07T15:16:47.807466333+08:00
 imports:
 - name: github.com/buger/jsonparser
   version: bb14bb6c38f6cf1706ef55278891d184b6a51b0e
@@ -21,6 +21,8 @@ imports:
   version: e8409d73255791843585964791443dbad877058c
 - name: github.com/go-xorm/xorm
   version: 3c8314e91603f0bfa6a228c1a0fea8a9e298f6d9
+- name: github.com/golang/net
+  version: 054b33e6527139ad5b1ec2f6232c3b175bd9a30c
 - name: github.com/hashicorp/consul
   version: 2c7715154d8d4568524b76d2d4deb7ca6fd1b285
   subpackages:
@@ -66,10 +68,19 @@ imports:
 - name: golang.org/x/crypto
   version: 3cb07270c9455e8ad27956a70891c962d121a228
   subpackages:
+  - acme
+  - acme/autocert
   - pbkdf2
   - scrypt
-- name: golang.org/x/sys/unix
-  version: 6faef541c73732f438fb660a212750a9ba9f9362
+- name: golang.org/x/net
+  version: ffcf1bedda3b04ebb15a168a59800a73d6dc0f4d
+  subpackages:
+  - context
+  - context/ctxhttp
+- name: golang.org/x/sys
+  version: 9a7256cb28ed514b4e1e5f68959914c4c28a92e0
+  subpackages:
+  - unix
 - name: gopkg.in/redis.v5
   version: a16aeec10ff407b1e7be6dd35797ccf5426ef0f0
   subpackages:
