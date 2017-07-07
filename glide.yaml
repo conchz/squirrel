@@ -5,9 +5,8 @@ excludeDirs:
 import:
 - package: github.com/willf/bitset
 - package: github.com/labstack/echo
-  version: v3.1.0
+  version: 3.2.1
 - package: github.com/go-sql-driver/mysql
-  version: v1.3
 - package: github.com/go-xorm/xorm
   version: ^0.6.2
 - package: github.com/valyala/fasthttp
@@ -18,12 +17,6 @@ import:
   version: ^1.4.1
 - package: go.uber.org/atomic
   version: ^1.2.0
-- package: github.com/gogo/protobuf
-  version: v0.4
-  subpackages:
-  - proto
-- package: github.com/casbin/casbin
-  version: ^0.4.0
 - package: github.com/tinylib/msgp
   version: ^1.0.1
 - package: github.com/buger/jsonparser
