@@ -17,6 +17,7 @@ import (
 	"runtime"
 	"sort"
 	"time"
+	"strconv"
 )
 
 type (
@@ -198,55 +199,54 @@ type (
 	}
 
 	httpError struct {
-		code    int
-		Key     string `json:"error"`
-		Message string `json:"message"`
+		status  int
+		Code    int `json:"code"`
+		Message string `json:"msg"`
 	}
 )
 
-func newHTTPError(code int, key string, msg string) *httpError {
+func newHTTPError(status, code int, msg string) *httpError {
 	return &httpError{
-		code:    code,
-		Key:     key,
+		status:  status,
+		Code:    code,
 		Message: msg,
 	}
 }
 
 // Error makes it compatible with `error` interface.
 func (e *httpError) Error() string {
-	return e.Key + ": " + e.Message
+	return strconv.Itoa(e.Code) + ": " + e.Message
 }
 
 // httpErrorHandler customize echo's HTTP error handler.
 func httpErrorHandler(err error, c echo.Context) {
 	var (
-		code = http.StatusInternalServerError
-		key  = "InternalServerError"
-		msg  string
+		status, code int
+		msg          string
 	)
 
 	if he, ok := err.(*httpError); ok {
-		code = he.code
-		key = he.Key
+		status = he.status
+		code = he.Code
 		msg = he.Message
 	} else if ehe, ok := err.(*echo.HTTPError); ok {
-		code = ehe.Code
-		key = http.StatusText(code)
+		status = ehe.Code
+		code = status
 		msg = fmt.Sprintf("%v", ehe.Message)
-	} else if isDebug {
-		msg = err.Error()
 	} else {
-		msg = http.StatusText(code)
+		status = http.StatusOK
+		code = -1
+		msg = err.Error()
 	}
 
 	if !c.Response().Committed {
 		if c.Request().Method == echo.HEAD {
-			err := c.NoContent(code)
+			err := c.NoContent(status)
 			if err != nil {
 				logger.Error(err)
 			}
 		} else {
-			err := c.JSON(code, newHTTPError(code, key, msg))
+			err := c.JSON(status, newHTTPError(status, code, msg))
 			if err != nil {
 				logger.Error(err)
 			}
@@ -297,7 +297,11 @@ func recoverWithConfig(config middleware.RecoverConfig) echo.MiddlewareFunc {
 
 // curl -i -w "\n" -H "'Content-Type': 'application/json; charset=UTF-8'" -d "username=test&password=passwd" http://localhost:7000/login
 // {
-//   "token": "××××××××××××××××"
+//   "code": 0,
+//   "data": {
+//     "token": "××××××××××××××××",
+//     "expire_time": 1499509270
+//   }
 // }
 func login(c echo.Context) error {
 	username := c.FormValue("username")
@@ -310,13 +314,14 @@ func login(c echo.Context) error {
 	}); u != nil {
 		user := u.(*models.User)
 		if username == user.Username && encryptedPasswd == user.Password {
+			expireTime := time.Now().Add(1 * time.Hour).Unix()
 			claims := &JWTClaims{
 				user.Id,
 				user.Username,
 				user.Cellphone,
 				user.Email,
 				jwt.StandardClaims{
-					ExpiresAt: time.Now().Add(1 * time.Hour).Unix(),
+					ExpiresAt: expireTime,
 				},
 			}
 
@@ -330,7 +335,11 @@ func login(c echo.Context) error {
 			}
 
 			return c.JSON(http.StatusOK, echo.Map{
-				"token": t,
+				"code": 0,
+				"data": echo.Map{
+					"token":       t,
+					"expire_time": expireTime,
+				},
 			})
 		}
 	}
@@ -343,16 +352,14 @@ func (claims JWTClaims) Valid() error {
 		vErr := err.(*jwt.ValidationError)
 		logger.Warnf("User[%s] JWT validation failed: %s", claims.Username, vErr.Inner.Error())
 
-		return newHTTPError(http.StatusUnauthorized, "TokenValidError", vErr.Inner.Error())
+		return newHTTPError(http.StatusOK, 2001, fmt.Sprintf("TokenValidError: %s", vErr.Inner.Error()))
 	}
 
 	if claims.UserId > 0 && claims.Username != "" {
 		return nil
 	}
 
-	return newHTTPError(http.StatusUnauthorized,
-		"TokenValidError",
-		"Must provide user_id and user_name")
+	return newHTTPError(http.StatusOK, 2001, "TokenValidError: Must provide user_id and user_name")
 }
 
 // curl -i -w "\n" -H "Authorization: Bearer $token" http://localhost:7000/api/v1
