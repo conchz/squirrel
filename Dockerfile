@@ -1,4 +1,4 @@
-FROM alpine:3.6
+FROM alpine:3.5
 MAINTAINER Zongzhi Bai <dolphineor@gmail.com>
 
 ENV PYTHON_VERSION=2.7.13-r0
