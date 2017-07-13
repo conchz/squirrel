@@ -16,8 +16,8 @@ import (
 	"os/signal"
 	"runtime"
 	"sort"
-	"time"
 	"strconv"
+	"time"
 )
 
 type (
@@ -200,7 +200,7 @@ type (
 
 	httpError struct {
 		status  int
-		Code    int `json:"code"`
+		Code    int    `json:"code"`
 		Message string `json:"msg"`
 	}
 )
