@@ -221,20 +221,19 @@ func (e *httpError) Error() string {
 // httpErrorHandler customize echo's HTTP error handler.
 func httpErrorHandler(err error, c echo.Context) {
 	var (
-		status, code int
-		msg          string
+		// All requests will be return HTTP 200 status
+		status int = http.StatusOK
+		code   int
+		msg    string
 	)
 
 	if he, ok := err.(*httpError); ok {
-		status = he.status
 		code = he.Code
 		msg = he.Message
 	} else if ehe, ok := err.(*echo.HTTPError); ok {
-		status = ehe.Code
-		code = status
+		code = ehe.Code
 		msg = fmt.Sprintf("%v", ehe.Message)
 	} else {
-		status = http.StatusOK
 		code = -1
 		msg = err.Error()
 	}
