@@ -10,7 +10,7 @@ os:
 dist: trusty
 sudo: required
 env:
-  - TRAVIS_NODE_VERSION="6"
+  - TRAVIS_NODE_VERSION="8"
 addons:
   apt:
     packages:
