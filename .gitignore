@@ -28,6 +28,7 @@ _testmain.go
 
 dist/
 vendor/
+_vendor-*/
 .idea/
 
 *npm-debug.log
