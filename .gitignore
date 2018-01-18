@@ -1,15 +1,7 @@
-# Compiled Object files, Static and Dynamic libs (Shared Objects)
+### Go template
 *.o
 *.a
 *.so
-
-# Folders
-_obj
-_test
-
-# Architecture specific extensions/prefixes
-*.[568vq]
-[568vq].out
 
 *.cgo1.go
 *.cgo2.c
@@ -20,17 +12,18 @@ _cgo_export.*
 _testmain.go
 
 *.exe
+*.exe~
 *.test
+*.out
 *.prof
+*.dll
+*.dylib
 
 *rice-box.go
 *rice-box.syso
 
 dist/
 vendor/
+vendor.orig/
 _vendor-*/
 .idea/
-
-*npm-debug.log
-*yarn-debug.log
-*yarn-error.log
