@@ -25,8 +25,8 @@ services:
 before_install:
   # https://docs.travis-ci.com/user/customizing-the-build/#Installing-a-Second-Programming-language
   - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
+  - go get -v github.com/golang/dep/cmd/dep
   - go get -v github.com/GeertJohan/go.rice/rice
-  - go get -v github.com/Masterminds/glide
 
 install:
   # Install project dependencies

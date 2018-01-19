@@ -7,7 +7,7 @@ A modern [*Golang*](https://golang.org/) web application scaffold, [*Echo*](http
 
 ## Deploying to Docker
 
-Make sure you have [Go](https://golang.org/doc/install), [Glide](https://github.com/Masterminds/glide), [go.rice](https://github.com/GeertJohan/go.rice), and [Node.js](https://nodejs.org/en/) installed.
+Make sure you have [Go](https://golang.org/doc/install), [Dep](https://github.com/golang/dep), [go.rice](https://github.com/GeertJohan/go.rice), and [Node.js](https://nodejs.org/en/) installed.
 
     $ ./deploy.sh
     

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Installing Golang dependencies
-glide install
+dep ensure
 
 # Installing ui dependencies
 cd ./ui && npm install --registry=https://registry.npm.taobao.org
