@@ -1,7 +1,7 @@
 # https://docs.travis-ci.com/user/getting-started/
 language: go
 go:
-  - 1.8.5
+  - 1.10.3
 branches:
   only:
     - master
