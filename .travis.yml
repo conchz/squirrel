@@ -14,8 +14,8 @@ env:
 addons:
   apt:
     packages:
-    - mysql-client-core-5.6
-    - mysql-client-5.6
+    - mysql-client-core-5.7
+    - mysql-client-5.7
 
 services:
   - mysql
@@ -34,7 +34,7 @@ install:
 
 before_script:
   # Create MySQL database and user
-  - mysql -u root -e "USE mysql;CREATE DATABASE IF NOT EXISTS squirrel DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci;CREATE USER 'kiwi'@'localhost' IDENTIFIED BY 'test1234$';GRANT ALL PRIVILEGES ON squirrel.* TO 'kiwi'@'localhost' IDENTIFIED BY 'test1234$';SET GLOBAL TIME_ZONE = '+8:00';SET TIME_ZONE = '+8:00';FLUSH PRIVILEGES;"
+  - mysql -u root -e "USE mysql;CREATE DATABASE IF NOT EXISTS test DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci;CREATE USER 'foo'@'localhost' IDENTIFIED BY 'test1234';GRANT ALL PRIVILEGES ON test.* TO 'foo'@'localhost' IDENTIFIED BY 'test1234';SET GLOBAL TIME_ZONE = '+8:00';SET TIME_ZONE = '+8:00';FLUSH PRIVILEGES;"
   - sudo redis-server /etc/redis/redis.conf --daemonize yes --port 16379 --requirepass '5RdXzAq1'
 
 script:
