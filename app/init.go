@@ -3,7 +3,7 @@ package app
 import (
 	"github.com/labstack/echo"
 	"github.com/lavenderx/squirrel/app/log"
-	"github.com/lavenderx/squirrel/app/models"
+	//"github.com/lavenderx/squirrel/app/models"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/yaml.v2"
 	"net/http"
