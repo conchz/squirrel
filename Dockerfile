@@ -6,7 +6,7 @@ ENV PY2_PIP_VERSION=9.0.0-r1
 ENV SUPERVISOR_VERSION=3.3.1
 
 # Setup TimeZone
-RUN apk update && apk --no-cache add ca-certificates tzdata vim && \
+RUN apk update && apk --no-cache add bash ca-certificates tzdata vim && \
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     echo "Asia/Shanghai" > /etc/timezone
 

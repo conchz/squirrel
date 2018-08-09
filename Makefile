@@ -4,7 +4,7 @@ IMAGE=lavenderx/squirrel
 
 install:
 	cd ./ui && rm -rf node_modules/ && npm install && cd -
-	dep ensure
+	dep ensure -update
 
 build:
 	cd ./ui && npm run gulp build-prod && cd -

@@ -25,11 +25,11 @@ func init() {
 	}, -1)
 	OnAppStart(initLog, 0)
 	OnAppStart(initMySQL)
-	OnAppStart(initRedis)
+	//OnAppStart(initRedis)
 
 	// Setup app shutdown hooks
 	OnAppStop(shutdownMySQL)
-	OnAppStop(shutdownRedis)
+	//OnAppStop(shutdownRedis)
 }
 
 // Initialize log component
@@ -47,9 +47,9 @@ func initMySQL() {
 	ConnectToMySQL(config)
 
 	mySQLTemplate = GetMySQLTemplate()
-	if err := mySQLTemplate.XormEngine().Sync2(new(models.User)); err != nil {
-		panic(err)
-	}
+	//if err := mySQLTemplate.XormEngine().Sync2(new(models.User)); err != nil {
+	//	panic(err)
+	//}
 }
 
 // Initialize Redis client

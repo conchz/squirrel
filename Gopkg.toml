@@ -23,27 +23,23 @@ ignored = ["github.com/lavenderx/squirrel/ui/node_modules"]
 
 [[constraint]]
   name = "github.com/dgrijalva/jwt-go"
-  version = "3.1.0"
+  version = "3.2.0"
 
 [[constraint]]
   branch = "master"
   name = "github.com/go-sql-driver/mysql"
 
 [[constraint]]
-  branch = "master"
-  name = "github.com/lib/pq"
-
-[[constraint]]
   name = "github.com/go-xorm/xorm"
-  version = "0.6.4"
+  version = "0.7.0"
 
 [[constraint]]
   name = "github.com/labstack/echo"
-  version = "3.2.6"
+  version = "3.3.5"
 
 [[constraint]]
   name = "go.uber.org/zap"
-  version = "1.7.1"
+  version = "1.9.1"
 
 [[constraint]]
   branch = "master"
