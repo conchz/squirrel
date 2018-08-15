@@ -293,26 +293,27 @@ func recoverWithConfig(config middleware.RecoverConfig) echo.MiddlewareFunc {
 	}
 }
 
-// curl -w "\n" -H "'Content-Type': 'application/json; charset=UTF-8'" -d "username=test&password=passwd" http://localhost:7000/login | jq
+// curl -w "\n" -H "'Content-Type': 'application/x-www-from-urlencoded'" -d "username=test&password=passwd" http://localhost:7000/login | jq
 // {
-//   "code": 0,
+//   "code": 1,
+//	 "msg":  "ok",
 //   "data": {
 //     "token": "××××××××××××××××",
-//     "expire_time": 1499509270
+//     "expire_time": 1534335001
 //   }
 // }
 func login(c echo.Context) error {
 	username := c.FormValue("username")
 	password := c.FormValue("password")
-	encryptedPasswd := crypto.EncryptPassword([]byte(password))
+	encryptedPassword := crypto.EncryptPassword([]byte(password))
 
 	if u := mySQLTemplate.GetByNonEmptyFields(&models.User{
 		Username: username,
-		Password: encryptedPasswd,
+		Password: encryptedPassword,
 	}); u != nil {
 		user := u.(*models.User)
-		if username == user.Username && encryptedPasswd == user.Password {
-			expireTime := time.Now().Add(1 * time.Hour).Unix()
+		if username == user.Username && encryptedPassword == user.Password {
+			expireTime := time.Now().Add(2 * time.Hour).Unix()
 			claims := &JWTClaims{
 				user.Id,
 				user.Username,
@@ -333,7 +334,8 @@ func login(c echo.Context) error {
 			}
 
 			return c.JSON(http.StatusOK, echo.Map{
-				"code": "OK",
+				"code": 1,
+				"msg":  "ok",
 				"data": echo.Map{
 					"token":       t,
 					"expire_time": expireTime,
@@ -342,7 +344,10 @@ func login(c echo.Context) error {
 		}
 	}
 
-	return echo.ErrUnauthorized
+	return c.JSON(http.StatusBadRequest, echo.Map{
+		"code": 0,
+		"msg":  "Missing or invalid jwt in the request header",
+	})
 }
 
 func (claims JWTClaims) Valid() error {
@@ -368,7 +373,8 @@ func api(c echo.Context) error {
 	claims := user.Claims.(*JWTClaims)
 	username := claims.Username
 	return c.JSON(http.StatusOK, echo.Map{
-		"code": "OK",
+		"code": 1,
+		"msg":  "ok",
 		"data": echo.Map{
 			"tagline": "Hello, " + username + "!",
 		},
@@ -405,7 +411,7 @@ func getPrivateIP() string {
 		return ""
 	}
 
-	var ipv4Addrs = []string{}
+	var ipv4Addrs []string
 
 	for _, a := range addrs {
 		if ipNet, ok := a.(*net.IPNet); ok && !ipNet.IP.IsLoopback() {
