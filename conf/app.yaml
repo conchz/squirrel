@@ -10,4 +10,4 @@ mysql:
 
 redis:
   address: 127.0.0.1:16379
-  password: 5RdXzAq1
+  password: 5RdX!zAq1

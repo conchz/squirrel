@@ -1,30 +1,51 @@
-version: "3"
+version: "2.2"
 services:
+  web:
+      build:
+        context: .
+      image: lavenderx/squirrel
+      container_name: squirrel
+      ports:
+        - 7000:7000
+      depends_on:
+        mysql:
+          condition: service_healthy
+        redis:
+          condition: service_started
+
   mysql:
     image: mysql:${MYSQL_TAG}
+    container_name: mysql
     ports:
       - 3306:3306
-    networks:
-      - squirrel_tier
-    container_name: mysql
+    restart: always
     volumes:
       - /var/lib/mysql
-      - ./mysql/my.cnf:/etc/my.cnf
-      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./scripts/mysql/my.cnf:/etc/my.cnf
+      - ./scripts/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       MYSQL_ROOT_PASSWORD: admin
+    healthcheck:
+      test: "mysql -ufoo -ptest1234 -Dtest -e\"SELECT version();\""
+      interval: 3s
+      timeout: 20s
+      retries: 3
 
-  web:
-    build:
-      context: .
-    image: lavenderx/squirrel
+  redis:
+    image: redis:${REDIS_TAG}
+    container_name: redis
     ports:
-      - 7000:7000
-    networks:
-      - squirrel_tier
-    depends_on:
-      mysql:
-        condition: service_healthy
-
-networks:
-  squirrel_tier:
+      - 16379:16379
+    restart: always
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./scripts/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    healthcheck:
+      interval: 3s
+      timeout: 10s
+      retries: 3
+      test:
+        - "CMD"
+        - "bash"
+        - "-c"
+        - "exec 3<> /dev/tcp/127.0.0.1/6379 && echo PING >&3 && head -1 <&3 | grep PONG"
