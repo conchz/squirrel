@@ -15,6 +15,7 @@ SET TIME_ZONE = '+8:00';
 FLUSH PRIVILEGES;
 
 
+USE test;
 -- ----------------------------
 -- Table structure for tbl_user
 -- ----------------------------
