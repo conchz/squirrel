@@ -5,7 +5,7 @@ services:
     ports:
       - 3306:3306
     networks:
-      squirrel_tier
+      - squirrel_tier
     container_name: mysql
     volumes:
       - /var/lib/mysql
@@ -21,6 +21,6 @@ services:
     ports:
       - 7000:7000
     networks:
-      squirrel_tier
+      - squirrel_tier
     depends_on:
       - mysql
