@@ -24,3 +24,6 @@ services:
       - squirrel_tier
     depends_on:
       - mysql
+
+networks:
+  squirrel_tier:
