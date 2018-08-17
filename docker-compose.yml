@@ -1,21 +1,26 @@
 version: "3"
 services:
-  db:
-    image: "mysql:5.7"
-    container_name: mysql
+  mysql:
+    image: mysql:${MYSQL_TAG}
     ports:
-      - "3306"
-    restart: always
+      - 3306:3306
+    networks:
+      squirrel_tier
+    container_name: mysql
     volumes:
       - /var/lib/mysql
       - ./mysql/my.cnf:/etc/my.cnf
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: admin
 
   web:
-    build: .
+    build:
+      context: .
+    image: lavenderx/squirrel
     ports:
-      - "7000:7000"
+      - 7000:7000
+    networks:
+      squirrel_tier
     depends_on:
-      - db
+      - mysql
