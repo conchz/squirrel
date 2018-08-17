@@ -13,7 +13,7 @@ npm run gulp build-prod && cd ..
 go generate ./app
 
 # Building an executable binary file
-CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./dist/squirrel-server
+CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./dist/squirrel
 
 # Building docker image
 docker build -t lavenderx/squirrel .

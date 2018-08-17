@@ -18,7 +18,7 @@ RUN pip install supervisor==$SUPERVISOR_VERSION
 RUN mkdir -p /var/log/supervisor && \
     mkdir -p /var/log/squirrel
 
-ADD ./dist/squirrel-server /usr/local/bin/
+ADD ./dist/squirrel /usr/local/bin/
 ADD ./supervisord.conf /etc/supervisor/supervisord.conf
 
 EXPOSE 7000

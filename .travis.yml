@@ -39,3 +39,4 @@ before_script:
 script:
   - make test
   - make package
+  - docker build -f Dockerfile -t lavenderx/squirrel .
