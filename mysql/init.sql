@@ -1,0 +1,15 @@
+USE mysql;
+
+CREATE DATABASE IF NOT EXISTS test
+  DEFAULT CHARSET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+CREATE USER 'foo'@'localhost'
+  IDENTIFIED BY 'test1234';
+GRANT ALL PRIVILEGES ON test.* TO 'foo'@'localhost'
+IDENTIFIED BY 'test1234';
+
+SET GLOBAL TIME_ZONE = '+8:00';
+SET TIME_ZONE = '+8:00';
+
+FLUSH PRIVILEGES;

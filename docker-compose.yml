@@ -1,0 +1,19 @@
+version: "3"
+services:
+  db:
+    image: "mysql:5.7"
+    container_name: mysql
+    ports:
+      - "3306"
+    restart: always
+    volumes:
+      - /var/lib/mysql
+      - ./mysql/my.cnf:/etc/my.cnf
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  web:
+    build: .
+    ports:
+      - "7000:7000"
+    depends_on:
+      - db
