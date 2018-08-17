@@ -10,6 +10,8 @@ services:
       - /var/lib/mysql
       - ./mysql/my.cnf:/etc/my.cnf
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
 
   web:
     build: .
