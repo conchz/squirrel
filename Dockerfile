@@ -5,6 +5,9 @@ ENV PYTHON_VERSION=2.7.14-r0
 ENV PY2_PIP_VERSION=9.0.0-r1
 ENV SUPERVISOR_VERSION=3.3.1
 
+RUN cp /etc/apk/repositories /etc/apk/repositories.bak
+RUN echo "https://mirrors.aliyun.com/alpine/v3.5/main/" > /etc/apk/repositories
+
 # Setup TimeZone
 RUN apk update && apk --no-cache add bash ca-certificates tzdata vim && \
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
