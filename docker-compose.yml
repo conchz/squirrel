@@ -23,7 +23,8 @@ services:
     networks:
       - squirrel_tier
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 
 networks:
   squirrel_tier:
