@@ -4,10 +4,8 @@ CREATE DATABASE IF NOT EXISTS test
   DEFAULT CHARSET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
-CREATE USER 'foo'@'localhost'
-  IDENTIFIED BY 'test1234';
-GRANT ALL PRIVILEGES ON test.* TO 'foo'@'localhost'
-IDENTIFIED BY 'test1234';
+CREATE USER 'foo'@'%' IDENTIFIED BY 'test1234';
+GRANT ALL PRIVILEGES ON test.* TO 'foo'@'%' IDENTIFIED BY 'test1234';
 
 SET GLOBAL TIME_ZONE = '+8:00';
 SET TIME_ZONE = '+8:00';
@@ -37,4 +35,4 @@ CREATE TABLE `tbl_user`  (
 -- ----------------------------
 -- Records of tbl_user
 -- ----------------------------
-INSERT INTO `tbl_user` VALUES (2, 'test', '46931023339d', 'XOP3z5O1kGn3Y3JlOOBlmZIHkOdC8lxu', '156××××××××', '', '2018-08-15 17:32:54', '2018-08-15 17:32:54');
+INSERT INTO `tbl_user` VALUES (1, 'test', '46931023339d', 'XOP3z5O1kGn3Y3JlOOBlmZIHkOdC8lxu', '156××××××××', '', '2018-08-20 10:32:54', '2018-08-20 10:32:54');

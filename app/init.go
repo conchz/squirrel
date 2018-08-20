@@ -1,9 +1,9 @@
 package app
 
 import (
+	"fmt"
 	"github.com/labstack/echo"
 	"github.com/lavenderx/squirrel/app/log"
-	//"github.com/lavenderx/squirrel/app/models"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/yaml.v2"
 	"net/http"
@@ -47,9 +47,12 @@ func initMySQL() {
 	ConnectToMySQL(config)
 
 	mySQLTemplate = GetMySQLTemplate()
-	//if err := mySQLTemplate.XormEngine().Sync2(new(models.User)); err != nil {
-	//	panic(err)
-	//}
+	var err error
+	results, err := mySQLTemplate.XormEngine().QueryString("select version() as version;")
+	if err != nil {
+		panic(err)
+	}
+	logger.Info("Connected to MySQL ", fmt.Sprintf("%s", results[0]["version"]))
 }
 
 // Initialize Redis client
