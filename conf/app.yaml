@@ -9,5 +9,5 @@ mysql:
   maxOpenConns: 100
 
 redis:
-  address: 127.0.0.1:16379
+  address: 127.0.0.1:6379
   password: 5RdX!zAq1

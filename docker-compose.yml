@@ -35,9 +35,9 @@ services:
     image: redis:${REDIS_TAG}
     container_name: redis
     ports:
-      - 16379:16379
+      - 6379:6379
     restart: always
-    command: redis-server --port 16379 --requirepass 5RdX!zAq1
+    command: redis-server --requirepass 5RdX!zAq1
     healthcheck:
       interval: 3s
       timeout: 10s
@@ -46,4 +46,4 @@ services:
         - "CMD"
         - "bash"
         - "-c"
-        - "exec 3<> /dev/tcp/127.0.0.1/16379 && echo PING >&3 && head -1 <&3 | grep PONG"
+        - "exec 3<> /dev/tcp/127.0.0.1/6379 && echo PING >&3 && head -1 <&3 | grep PONG"
