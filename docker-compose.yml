@@ -19,6 +19,7 @@ services:
   mysql:
     image: mysql:${MYSQL_TAG}
     container_name: mysql
+    hostname: mysql
     ports:
       - 3306:3306
     networks:
@@ -40,6 +41,7 @@ services:
   redis:
     image: redis:${REDIS_TAG}
     container_name: redis
+    hostname: redis
     ports:
       - 6379:6379
     networks:

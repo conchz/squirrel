@@ -12,6 +12,9 @@ sudo: required
 env:
   - TRAVIS_NODE_VERSION="8"
 addons:
+  hosts:
+    - mysql
+    - redis
   apt:
     packages:
     - mysql-client-5.6
