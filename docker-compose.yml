@@ -15,6 +15,11 @@ services:
 #          condition: service_healthy
         - redis
 #          condition: service_started
+      healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:7000/"]
+        interval: 30s
+        timeout: 15s
+        retries: 3
 
   mysql:
     image: mysql:${MYSQL_TAG}
