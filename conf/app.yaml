@@ -3,11 +3,11 @@ server:
 
 mysql:
   driver: mysql
-  dataSource: foo:test1234@tcp(127.0.0.1:3306)/test?charset=utf8mb4
+  dataSource: foo:test1234@tcp(squirrel-net:3306)/test?charset=utf8mb4
   showSql: false
   maxIdleConns: 10
   maxOpenConns: 100
 
 redis:
-  address: 127.0.0.1:6379
+  address: squirrel-net:6379
   password: 5RdX!zAq1

@@ -1,7 +1,7 @@
 # https://docs.travis-ci.com/user/getting-started/
 language: go
 go:
-  - 1.10.3
+  - 1.10.4
 branches:
   only:
     - master
@@ -12,6 +12,8 @@ sudo: required
 env:
   - TRAVIS_NODE_VERSION="8"
 addons:
+  hosts:
+    - squirrel-net
   apt:
     packages:
     - mysql-client-5.6
