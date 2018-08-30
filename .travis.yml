@@ -12,8 +12,6 @@ sudo: required
 env:
   - TRAVIS_NODE_VERSION="8"
 addons:
-  hosts:
-    - squirrel-net
   apt:
     packages:
     - mysql-client-5.6
